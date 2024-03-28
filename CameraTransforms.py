@@ -6,7 +6,7 @@ class CameraTransforms(ThreeDScene):
     def construct(self):
         self.set_camera_orientation(phi = 45 * DEGREES, theta = -85 * DEGREES, gamma = 95 * DEGREES, zoom = 1)
         
-        camera = Camera.drawCamera(focal_point_coords=[0.5, 0, 3])
+        camera = Camera.drawCamera(projection_point_coords=[0.5, 0, 3], focal_length=5)
         
         y_axis_translation_text = Text("Translation along Y axis")
         y_axis_translation_text.to_edge(DOWN)
