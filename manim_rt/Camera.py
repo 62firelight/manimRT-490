@@ -1,6 +1,31 @@
-from manim import *
 import numpy as np
+from manim import *
 
+from manim_rt.Helper import clamp
+from manim_rt.Ray import Ray
+
+"""
+TODO for ray-object intersections:
+* Check if indeterminate rotations happen with other objects
+* Determine if ray objects should be immutable
+* Determine if the Camera's draw_ray should be normalizing the vector's magnitude
+* Generate spheres that intersect the ray at different points (2 intersection points + 1 intersection + no intersection)
+* Perform automatic intersections between rays and spheres at the origin
+    * Automatically figure out the normal (easy for spheres)
+* Perform automatic intersections between rays and transformed spheres
+    * Automatically figure out the inverse of the linear transformation (use a matrix library like NumPy??)
+    * Apply the inverse linear transformation to the ray (start point of the ray + direction of the ray)
+    * Then apply the transformation to the hit point to find the actual intersection
+    * Also apply the transposed inverse transformation to the normal to find the actual normal
+* Add option to initialize camera grid with x value and aspect ratio
+    
+TODO DONE:
+* Add drawRay function for drawing through pixels (AKA center of grid cell) -- could try using c2p method
+* Add focal length parameter
+* Parameterize for grid width and height (i.e., camera resolution)
+* Add draw_ray function for drawing rays anywhere (potentially based on a ray equation)
+* Keep track of ray properties (ray equation, hit point, etc)
+"""
     
 class Camera:
     def __init__(self, projection_point_coords=[0, 0, 0], focal_length=1, width=16, height=9, total_width=5, total_height=5):
@@ -34,7 +59,7 @@ class Camera:
         
         self.camera = Group(self.projection_point, self.top_left, self.top_right, self.bottom_left, self.bottom_right, self.grid)
         
-    def draw_ray(self, x, y, distance_steps=2, color=BLUE):
+    def draw_ray(self, x, y, distance=2, color=BLUE):
         pixel_x_coord = round(x)
         pixel_y_coord = round(y)
         
@@ -44,11 +69,13 @@ class Camera:
         pixel_coords = self.grid.c2p(pixel_x_coord - 0.5, pixel_y_coord + 0.5)
         
         # TODO: creating another object inside this object method -- possibly bad design??
-        ray = Ray(self.projection_point_coords, pixel_coords, distance_steps)
+        ray = Ray(self.projection_point_coords, pixel_coords, distance, color)
+        
+        # 1 unit of this ray's distance is equivalent to the camera's focal length
         
         return ray
         
-    def get_camera(self):
+    def get_mobject(self):
         return self.camera
     
     def get_projection_point(self):
@@ -68,57 +95,6 @@ class Camera:
     
     def get_grid(self):
         return self.grid
-    
-class Ray:
-    def __init__(self, start_point, end_point, distance_steps=2, color=BLUE):
-        self.start_point = start_point
-        self.direction = np.subtract(end_point, start_point)
-        self.distance_steps = distance_steps
-        self.color = color
-        
-        mobject_end_point = self.start_point + self.distance_steps * np.array(self.direction)
-        
-        self.mobject = Arrow3D(start_point, mobject_end_point, color=color)
-    
-    def get_start_point(self):
-        return self.start_point
-    
-    def get_direction(self):
-        return self.direction
-    
-    def get_distance_steps(self):
-        return self.distance_steps
-    
-    def get_mobject(self):
-        return self.mobject
-    
-    def get_color(self):
-        return self.color
-    
-    def set_color(self, color):
-        self.color = color
-    
-    def change_distance(self, distance_steps):
-        self.distance_steps = distance_steps
-        
-        mobject_end_point = self.start_point + self.distance_steps * np.array(self.direction)
-        
-        self.mobject = Arrow3D(self.start_point, mobject_end_point, color=self.color)
-        
-        return self.mobject
-    
-def clamp(n, min, max): 
-    """
-    Quick helper function for limiting numbers.
-    
-    source: https://www.geeksforgeeks.org/how-to-clamp-floating-numbers-in-python/ 
-    """
-    if n < min: 
-        return min
-    elif n > max: 
-        return max
-    else: 
-        return n 
 
 def drawCamera(projection_point_coords = [0, 0, 0], focal_length=1, number_plane_grid = True):
     """
@@ -135,7 +111,6 @@ def drawCamera(projection_point_coords = [0, 0, 0], focal_length=1, number_plane
     
     if number_plane_grid:
         # Grid made up of a number plane
-        # TODO: parameterize for grid width and height (i.e., camera resolution)
         grid = NumberPlane(x_range = [-1, 1, 1/3], y_range = [-1, 1, 1/3], x_length = 5, y_length = 5)
         grid.move_to([projection_point_coords[0], projection_point_coords[1], projection_point_coords[2] - focal_length])
     else:

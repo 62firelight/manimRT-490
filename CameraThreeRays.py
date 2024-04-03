@@ -1,13 +1,13 @@
 from manim import *
 from manim_rt import Camera
 
-class CustomCameraTest(ThreeDScene):
+class CameraThreeRays(ThreeDScene):
     def construct(self):
         self.set_camera_orientation(phi = 45 * DEGREES, theta = -85 * DEGREES, gamma = 95 * DEGREES, zoom = 1.25)
         
         projection_point_coords = [0, 0, 5]
         
-        camera = Camera.drawCamera(projection_point_coords, True, focal_length=5)
+        camera = Camera.drawCamera(projection_point_coords=projection_point_coords, focal_length=5, number_plane_grid=True)
         
         # use 15 degrees for the offset
         # self.play(Rotate(camera, 385 * DEGREES, RIGHT, rate_func=linear))
@@ -16,7 +16,6 @@ class CustomCameraTest(ThreeDScene):
         
         self.play(GrowFromCenter(camera))
         
-        # TODO: generalize where these rays will go so that they always go
         # the center of each camera pixel
         ray1 = Arrow3D(projection_point_coords, [2.15, 2.15, 0], color = RED)
         ray2 = Arrow3D(projection_point_coords, [2.15, 1.25, 0], color = GREEN)
