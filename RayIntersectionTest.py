@@ -4,7 +4,7 @@ from manim_rt.Ray3D import Ray3D
 
 import numpy as np
 
-class red_rayIntersectionTest(ThreeDScene):
+class RayIntersectionTest(ThreeDScene):
     def construct(self):
         self.set_camera_orientation(phi=75 * DEGREES, theta=-95 * DEGREES)
         
