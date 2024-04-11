@@ -1,6 +1,7 @@
 from manim import *
 
 import numpy as np
+import math
 
 class Ray3D(Arrow3D):
     def __init__(
@@ -23,3 +24,36 @@ class Ray3D(Arrow3D):
         
         self.distance = distance
         
+    def get_intersection(self, object) -> list:        
+        # a = d dot d
+        # b = 2(p_0 dot d)
+        # c = p_0 dot p_0 - 1
+        
+        a = np.dot(self.direction, self.direction)
+        b = 2 * np.dot(self.start, self.direction)
+        c = np.dot(self.start, self.start) - 1
+        
+        hit_locations = self.quadratic_formula(a, b, c)
+        
+        hit_points = []
+        for hit_location in hit_locations:
+            hit_point = self.start + hit_location * np.array(self.direction)
+            # hit_point_obj = Dot3D(hit_point, color=color)
+            hit_points.append(hit_point)
+        
+        return hit_points
+    
+    def quadratic_formula(self, a, b, c) -> list:
+        # b^2 - 4 * a * c
+        discriminant = b*b - 4*a*c
+        
+        if discriminant < 0:
+            return []
+        elif discriminant == 0:
+            x = -b / (2 * a)
+            return [x]
+        elif discriminant > 0:
+            x_1 = (-b - math.sqrt(discriminant)) / (2 * a)
+            x_2 = (-b + math.sqrt(discriminant)) / (2 * a)
+            
+            return [x_1, x_2]
