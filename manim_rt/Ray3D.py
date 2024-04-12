@@ -24,14 +24,14 @@ class Ray3D(Arrow3D):
         
         self.distance = distance
         
-    def get_intersection(self, object) -> list:        
+    def get_intersection(self, sphere: Sphere) -> list:        
         # a = d dot d
         # b = 2(p_0 dot d)
-        # c = p_0 dot p_0 - 1
+        # c = p_0 dot p_0 - r^2
         
         a = np.dot(self.direction, self.direction)
         b = 2 * np.dot(self.start, self.direction)
-        c = np.dot(self.start, self.start) - 1
+        c = np.dot(self.start, self.start) - sphere.radius * sphere.radius
         
         hit_locations = self.quadratic_formula(a, b, c)
         
@@ -44,8 +44,8 @@ class Ray3D(Arrow3D):
         return hit_points
     
     def quadratic_formula(self, a, b, c) -> list:
-        # b^2 - 4 * a * c
-        discriminant = b*b - 4*a*c
+        # b^2 - 4ac
+        discriminant = b * b - 4 * a * c
         
         if discriminant < 0:
             return []
