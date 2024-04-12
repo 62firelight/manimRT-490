@@ -24,21 +24,33 @@ class Ray3D(Arrow3D):
         
         self.distance = distance
         
-    def get_intersection(self, sphere: Sphere) -> list:        
-        # a = d dot d
-        # b = 2(p_0 dot d)
-        # c = p_0 dot p_0 - r^2
+        self.homogenous_start = np.append(start, 1)
+        self.homogenous_direction = np.append(direction, 0)
         
-        a = np.dot(self.direction, self.direction)
-        b = 2 * np.dot(self.start, self.direction)
-        c = np.dot(self.start, self.start) - sphere.radius * sphere.radius
+    def get_intersection(self, object: Sphere) -> list:        
+        # TODO: Have a condition here to check what the object type is
+        
+        translation = object.get_center()
+        
+        # Inverse is just the negative for translation
+        # Assume spheres can only be translated for now
+        inverse_translation = np.negative(translation)
+        
+        start = np.add(self.start, inverse_translation)
+        # direction = np.add(self.direction, inverse_translation)
+        direction = self.direction
+        
+        a = np.dot(direction, direction)
+        b = 2 * np.dot(start, direction)
+        c = np.dot(start, start) - object.radius * object.radius
         
         hit_locations = self.quadratic_formula(a, b, c)
         
         hit_points = []
         for hit_location in hit_locations:
-            hit_point = self.start + hit_location * np.array(self.direction)
+            hit_point = start + hit_location * np.array(direction)
             # hit_point_obj = Dot3D(hit_point, color=color)
+            hit_point = np.add(hit_point, translation)
             hit_points.append(hit_point)
         
         return hit_points
