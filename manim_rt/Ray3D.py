@@ -27,33 +27,32 @@ class Ray3D(Arrow3D):
         self.homogenous_start = np.append(start, 1)
         self.homogenous_direction = np.append(direction, 0)
         
-    def get_intersection(self, object: Sphere) -> list:        
-        # TODO: Have a condition here to check what the object type is
+    def get_intersection(self, object: Mobject) -> list:        
+        if type(object) == Sphere:
+            translation = object.get_center()
+            
+            # Inverse is just the negative for translation
+            # Assume spheres can only be translated for now
+            inverse_translation = np.negative(translation)
+            
+            start = np.add(self.start, inverse_translation)
+            direction = self.direction
+            
+            a = np.dot(direction, direction)
+            b = 2 * np.dot(start, direction)
+            c = np.dot(start, start) - object.radius * object.radius
+            
+            hit_locations = self.quadratic_formula(a, b, c)
+            
+            hit_points = []
+            for hit_location in hit_locations:
+                hit_point = start + hit_location * np.array(direction)
+                hit_point = np.add(hit_point, translation)
+                hit_points.append(hit_point)
         
-        translation = object.get_center()
-        
-        # Inverse is just the negative for translation
-        # Assume spheres can only be translated for now
-        inverse_translation = np.negative(translation)
-        
-        start = np.add(self.start, inverse_translation)
-        # direction = np.add(self.direction, inverse_translation)
-        direction = self.direction
-        
-        a = np.dot(direction, direction)
-        b = 2 * np.dot(start, direction)
-        c = np.dot(start, start) - object.radius * object.radius
-        
-        hit_locations = self.quadratic_formula(a, b, c)
-        
-        hit_points = []
-        for hit_location in hit_locations:
-            hit_point = start + hit_location * np.array(direction)
-            # hit_point_obj = Dot3D(hit_point, color=color)
-            hit_point = np.add(hit_point, translation)
-            hit_points.append(hit_point)
-        
-        return hit_points
+            return hit_points
+        else:
+            raise Exception("Unsupported object type!")
     
     def quadratic_formula(self, a, b, c) -> list:
         # b^2 - 4ac
