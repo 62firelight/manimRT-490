@@ -19,7 +19,12 @@ class RayIntersectionTest(ThreeDScene):
             self.add(hit_point_obj)
         
         hit_point_normal = hit_points[0]
-        print(hit_point_normal)
-        green_ray = Ray3D(sphere.get_center(), hit_point_normal - sphere.get_center(), 3, color=GREEN)
+        green_ray = Ray3D(sphere.get_center(), hit_point_normal - sphere.get_center(), 2.5, color=GREEN)
+        
+        red_ray_equation = MathTex(red_ray.get_equation(), color=RED)
+        green_ray_equation = MathTex(green_ray.get_equation(), color=GREEN)
+        
+        equations = VGroup(red_ray_equation, green_ray_equation).arrange(DOWN).to_edge(DOWN)
         
         self.add(axes, red_ray, green_ray, sphere)
+        self.add_fixed_in_frame_mobjects(equations)

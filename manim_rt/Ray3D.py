@@ -27,6 +27,16 @@ class Ray3D(Arrow3D):
         self.homogenous_start = np.append(start, 1)
         self.homogenous_direction = np.append(direction, 0)
         
+    def get_equation(self, homogenous_coordinates=False) -> str:
+        # TODO: Round any floating point numbers 
+        # TODO: Hide .0 for float numbers that are whole for consistency
+        if not homogenous_coordinates:
+            equation = "{} + \lambda {}".format(np.ndarray.tolist(self.start), np.ndarray.tolist(self.direction))
+        else:
+            equation = "{} + \lambda {}".format(np.ndarray.tolist(self.homogenous_start), np.ndarray.tolist(self.homogenous_direction))
+        
+        return equation
+        
     def get_intersection(self, object: Mobject) -> list:        
         if type(object) == Sphere:
             translation = object.get_center()
@@ -66,6 +76,9 @@ class Ray3D(Arrow3D):
             return hit_points
         else:
             raise Exception("Unsupported object type!")
+        
+    def is_whole_number(self, number) -> bool:
+        return number % 1 == 0
     
     def quadratic_formula(self, a, b, c) -> list:
         # b^2 - 4ac
