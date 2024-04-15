@@ -24,7 +24,7 @@ class RayIntersectionTest(ThreeDScene):
         red_ray_equation = MathTex(red_ray.get_equation(), color=RED)
         green_ray_equation = MathTex(green_ray.get_equation(), color=GREEN)
         
-        equations = VGroup(red_ray_equation, green_ray_equation).arrange(DOWN).to_edge(DOWN)
+        equations = VGroup(red_ray_equation, green_ray_equation).arrange(DOWN, center=False, aligned_edge=LEFT).to_corner(DL)
         
         self.add(axes, red_ray, green_ray, sphere)
         self.add_fixed_in_frame_mobjects(equations)
