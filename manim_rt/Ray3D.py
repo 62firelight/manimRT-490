@@ -35,6 +35,8 @@ class Ray3D(Arrow3D):
             # Assume spheres can only be translated for now
             inverse_translation = np.negative(translation)
             
+            # apply inverse transformation
+            # TODO: account for rotation and scaling
             start = np.add(self.start, inverse_translation)
             direction = self.direction
             
@@ -45,11 +47,22 @@ class Ray3D(Arrow3D):
             hit_locations = self.quadratic_formula(a, b, c)
             
             hit_points = []
+            normals = []
             for hit_location in hit_locations:
                 hit_point = start + hit_location * np.array(direction)
+                
+                # apply transformation to find actual hit point
                 hit_point = np.add(hit_point, translation)
+                
+                # for spheres, the hit point will be the normal
+                # (i.e., perpendicular to the sphere)
+                normals.append(hit_point)
+                
                 hit_points.append(hit_point)
         
+            self.hit_points = hit_points
+            self.normals = normals
+            
             return hit_points
         else:
             raise Exception("Unsupported object type!")

@@ -18,4 +18,8 @@ class RayIntersectionTest(ThreeDScene):
             hit_point_obj = Dot3D(hit_point)
             self.add(hit_point_obj)
         
-        self.add(axes, red_ray, sphere)
+        hit_point_normal = hit_points[0]
+        print(hit_point_normal)
+        green_ray = Ray3D(sphere.get_center(), hit_point_normal - sphere.get_center(), 3, color=GREEN)
+        
+        self.add(axes, red_ray, green_ray, sphere)
