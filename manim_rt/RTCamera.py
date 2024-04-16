@@ -4,23 +4,47 @@ from manim import *
 
 import numpy as np
 
+from manim_rt.Ray3D import Ray3D
+
+def clamp(n, min, max): 
+        """
+        Quick helper function for limiting numbers.
+        
+        TODO: Separate this into its own Helper file 
+        source: https://www.geeksforgeeks.org/how-to-clamp-floating-numbers-in-python/ 
+        """
+        if n < min: 
+            return min
+        elif n > max: 
+            return max
+        else: 
+            return n 
+
 class RTCamera(Axes):
     def __init__(
         self,
-        width: int = 16,
-        height: int = 9,
+        projection_point_coords: list = ORIGIN,
+        plane_width: int = 16,
+        plane_height: int = 9,
         total_width: int = 5,
         total_height: int = 5,
+        focal_length: int = 1,
         background_line_style: dict[str, Any] | None = None,
         faded_line_style: dict[str, Any] | None = None,
         faded_line_ratio: int = 1,
         make_smooth_after_applying_functions: bool = True,
         **kwargs: dict[str, Any],
     ):
-        x_range=[0, width, 1]
-        y_range=[-height, 0, 1]
+        self.projection_point_coords = projection_point_coords
+        x_range=[0, plane_width, 1]
+        y_range=[-plane_height, 0, 1]
         x_length=total_width
         y_length=total_height
+        self.focal_length = focal_length
+        self.plane_width = plane_width
+        self.plane_height = plane_height
+        self.total_width = total_width
+        self.total_height = total_height
         
         # configs
         self.axis_config = {
@@ -64,6 +88,32 @@ class RTCamera(Axes):
         )
 
         self._init_background_lines()
+    
+        plane_z_coord = projection_point_coords[2] - focal_length
+    
+        self.projection_point = Dot3D(projection_point_coords, radius = 0.15, color = WHITE)
+        
+        self.move_to([projection_point_coords[0], projection_point_coords[1], plane_z_coord])
+        
+        # Determine corner coordinates
+        top_left_coords = self.c2p(0, 0)
+        top_right_coords = self.c2p(plane_width, 0)
+        bottom_left_coords = self.c2p(0, -plane_height)
+        bottom_right_coords = self.c2p(plane_width, -plane_height)
+        
+        # Frustum made up of 4 3D lines
+        self.top_left = Line3D(projection_point_coords, [top_left_coords[0], top_left_coords[1], plane_z_coord], color=WHITE)
+        self.top_right = Line3D(projection_point_coords, [top_right_coords[0], top_right_coords[1], plane_z_coord], color=WHITE)
+        self.bottom_left = Line3D(projection_point_coords, [bottom_left_coords[0], bottom_left_coords[1], plane_z_coord], color=WHITE)
+        self.bottom_right = Line3D(projection_point_coords, [bottom_right_coords[0], bottom_right_coords[1], plane_z_coord], color=WHITE)
+        
+        self.add_to_back(
+            self.projection_point,
+            self.top_left,
+            self.top_right,
+            self.bottom_left,
+            self.bottom_right
+        )
         
     def _init_background_lines(self) -> None:
         """Will init all the lines of NumberPlanes (faded or not)"""
@@ -151,7 +201,7 @@ class RTCamera(Axes):
              (i.e the faded lines parallel to `axis_parallel_to`) sets of lines, respectively.
         """
 
-        line = Line3D(axis_parallel_to.get_start(), axis_parallel_to.get_end(), thickness=0.01)
+        line = Line3D(axis_parallel_to.get_start(), axis_parallel_to.get_end(), thickness=0.001)
         if ratio_faded_lines == 0:  # don't show faded lines
             ratio_faded_lines = 1  # i.e. set ratio to 1
         step = (1 / ratio_faded_lines) * freq
@@ -185,3 +235,25 @@ class RTCamera(Axes):
                 else:
                     lines2.add(new_line)
         return lines1, lines2
+    
+    def draw_ray(self, x, y, distance=None, thickness=0.02, color=BLUE):
+        if distance is None:
+            distance = self.focal_length * 2
+        
+        pixel_x_coord = round(x)
+        pixel_y_coord = round(y)
+        
+        pixel_x_coord = clamp(pixel_x_coord, 1, self.plane_width)
+        pixel_y_coord = -clamp(pixel_y_coord, 1, self.plane_height)
+        
+        pixel_coords = self.c2p(pixel_x_coord - 0.5, pixel_y_coord + 0.5)
+        
+        ray_direction = pixel_coords - self.projection_point_coords
+        
+        ray = Ray3D(self.projection_point_coords, ray_direction, distance=distance, thickness=thickness, color=color)
+        
+        # 1 unit of this ray's distance is equivalent to the camera's focal length
+        
+        return ray
+    
+    

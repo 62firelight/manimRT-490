@@ -6,13 +6,12 @@ from manim_rt.Ray3D import Ray3D
 
 class CameraTest(ThreeDScene):
     def construct(self):
-        self.set_camera_orientation(phi=-20 * DEGREES)
+        self.set_camera_orientation(phi=-45*DEGREES)
+        # self.set_camera_orientation(phi = 55 * DEGREES, theta = -90 * DEGREES, gamma = 90 * DEGREES, zoom = 1.25)
         
-        axes = ThreeDAxes()
-        axes.add(axes.get_axis_labels())
+        camera = RTCamera([0, 0, 4], focal_length=5)
+        # camera.rotate(-45, UP)
         
-        camera = RTCamera()
+        red_ray = camera.draw_ray(8, 5, color=RED)
         
-        ray = Ray3D([0, 0, 1], [1, 0, 0], 3)
-        
-        self.add(camera, ray)
+        self.add(camera, red_ray)

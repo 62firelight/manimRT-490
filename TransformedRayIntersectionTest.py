@@ -4,7 +4,7 @@ from manim_rt.Ray3D import Ray3D
 
 import numpy as np
 
-class RayIntersectionTest(ThreeDScene):
+class TransformedRayIntersectionTest(ThreeDScene):
     def construct(self):
         self.set_camera_orientation(phi=75 * DEGREES, theta=-115 * DEGREES)
         
@@ -19,7 +19,7 @@ class RayIntersectionTest(ThreeDScene):
             self.add(hit_point_obj)
         
         hit_point_normal = hit_points[0]
-        green_ray = Ray3D(sphere.get_center(), hit_point_normal - sphere.get_center(), 2.5, color=GREEN)
+        green_ray = Ray3D(sphere.get_center(), hit_point_normal - sphere.get_center(), 5, color=GREEN)
         
         red_ray_equation = MathTex(red_ray.get_equation(), color=RED)
         green_ray_equation = MathTex(green_ray.get_equation(), color=GREEN)

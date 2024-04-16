@@ -18,6 +18,6 @@ class RayIntersectionTest(ThreeDScene):
         for hit_point in hit_points:
             hit_point_obj = Dot3D(hit_point)
             self.add(hit_point_obj)
-            self.add_fixed_in_frame_mobjects(Text(np.array2string(hit_point), font_size=30, color=YELLOW).next_to(hit_point_obj, DOWN))
+            self.add_fixed_in_frame_mobjects(Text(str(np.ndarray.tolist(hit_point)), font_size=22, color=YELLOW).next_to(hit_point_obj, DOWN))
         
         self.add(axes, red_ray, sphere)

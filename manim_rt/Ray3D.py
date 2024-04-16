@@ -13,8 +13,7 @@ class Ray3D(Arrow3D):
         color: ParsableManimColor = WHITE,
         **kwargs,
     ) -> None:
-        # TODO: Normalize the direction
-        self.direction = direction
+        self.direction = normalize(direction)
         
         end = start + distance * np.array(self.direction)
         
