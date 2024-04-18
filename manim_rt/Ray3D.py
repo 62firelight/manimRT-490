@@ -3,6 +3,8 @@ from manim import *
 import numpy as np
 import math
 
+from manim_rt.RTSphere import RTSphere
+
 class Ray3D(Arrow3D):
     def __init__(
         self,
@@ -23,8 +25,8 @@ class Ray3D(Arrow3D):
         
         self.distance = distance
         
-        self.homogenous_start = np.append(start, 1)
-        self.homogenous_direction = np.append(direction, 0)
+        self.homogeneous_start = np.append(start, 1)
+        self.homogeneous_direction = np.append(direction, 0)
         
     def get_equation(self, homogenous_coordinates=False) -> str:
         # TODO: Round any floating point numbers 
@@ -32,7 +34,7 @@ class Ray3D(Arrow3D):
         if not homogenous_coordinates:
             equation = "{} + \lambda {}".format(np.ndarray.tolist(self.start), np.ndarray.tolist(self.direction))
         else:
-            equation = "{} + \lambda {}".format(np.ndarray.tolist(self.homogenous_start), np.ndarray.tolist(self.homogenous_direction))
+            equation = "{} + \lambda {}".format(np.ndarray.tolist(self.homogeneous_start), np.ndarray.tolist(self.homogeneous_direction))
         
         return equation
         
@@ -71,6 +73,46 @@ class Ray3D(Arrow3D):
         
             self.hit_points = hit_points
             self.normals = normals
+            
+            return hit_points
+        elif type(object) == RTSphere:
+            
+            # apply inverse transformation
+            start_inverse = np.matmul(object.inverse, self.homogeneous_start)
+            direction_inverse = np.matmul(object.inverse, self.homogeneous_direction)
+            
+            print(start_inverse, direction_inverse)
+            
+            inhomogeneous_start_inverse = start_inverse[:3]
+            inhomogeneous_direction_inverse = direction_inverse[:3]
+            
+            a = np.dot(inhomogeneous_direction_inverse, inhomogeneous_direction_inverse)
+            b = 2 * np.dot(inhomogeneous_start_inverse, inhomogeneous_direction_inverse)
+            c = np.dot(inhomogeneous_start_inverse, inhomogeneous_start_inverse) - 1
+            
+            hit_locations = self.quadratic_formula(a, b, c)
+            
+            print(hit_locations)
+            
+            hit_points = []
+            normals = []
+            for hit_location in hit_locations:
+                hit_point = start_inverse + hit_location * direction_inverse
+                
+                # apply transformation to find actual hit point
+                hit_point = np.matmul(object.transform, hit_point)
+                
+                hit_point = hit_point[:3]
+                
+                # for spheres, the hit point will be the normal
+                # (i.e., perpendicular to the sphere)
+                normals.append(hit_point)
+                hit_points.append(hit_point)
+        
+            self.hit_points = hit_points
+            self.normals = normals
+            
+            print(hit_points)
             
             return hit_points
         else:
