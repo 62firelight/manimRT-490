@@ -32,9 +32,9 @@ class Ray3D(Arrow3D):
         # TODO: Round any floating point numbers 
         # TODO: Hide .0 for float numbers that are whole for consistency
         if not homogenous_coordinates:
-            equation = "{} + \lambda {}".format(np.ndarray.tolist(self.start), np.ndarray.tolist(self.direction))
+            equation = "{} + \\lambda {}".format(np.ndarray.tolist(self.start), np.ndarray.tolist(self.direction))
         else:
-            equation = "{} + \lambda {}".format(np.ndarray.tolist(self.homogeneous_start), np.ndarray.tolist(self.homogeneous_direction))
+            equation = "{} + \\lambda {}".format(np.ndarray.tolist(self.homogeneous_start), np.ndarray.tolist(self.homogeneous_direction))
         
         return equation
         
@@ -81,8 +81,6 @@ class Ray3D(Arrow3D):
             start_inverse = np.matmul(object.inverse, self.homogeneous_start)
             direction_inverse = np.matmul(object.inverse, self.homogeneous_direction)
             
-            print(start_inverse, direction_inverse)
-            
             inhomogeneous_start_inverse = start_inverse[:3]
             inhomogeneous_direction_inverse = direction_inverse[:3]
             
@@ -91,8 +89,6 @@ class Ray3D(Arrow3D):
             c = np.dot(inhomogeneous_start_inverse, inhomogeneous_start_inverse) - 1
             
             hit_locations = self.quadratic_formula(a, b, c)
-            
-            print(hit_locations)
             
             hit_points = []
             normals = []
@@ -111,8 +107,6 @@ class Ray3D(Arrow3D):
         
             self.hit_points = hit_points
             self.normals = normals
-            
-            print(hit_points)
             
             return hit_points
         else:
