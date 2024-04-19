@@ -47,7 +47,6 @@ class Ray3D(Arrow3D):
             inverse_translation = np.negative(translation)
             
             # apply inverse transformation
-            # TODO: account for rotation and scaling
             start = np.add(self.start, inverse_translation)
             direction = self.direction
             
@@ -93,9 +92,10 @@ class Ray3D(Arrow3D):
             hit_points = []
             normals = []
             for hit_location in hit_locations:
+                # find hit point for the transformed ray
                 hit_point = start_inverse + hit_location * direction_inverse
                 
-                # apply transformation to find actual hit point
+                # apply original transformation to find actual hit point
                 hit_point = np.matmul(object.transform, hit_point)
                 
                 hit_point = hit_point[:3]
@@ -106,6 +106,7 @@ class Ray3D(Arrow3D):
                 hit_points.append(hit_point)
         
             self.hit_points = hit_points
+            # TODO: Maybe give the normals to the object to keep track of?
             self.normals = normals
             
             return hit_points

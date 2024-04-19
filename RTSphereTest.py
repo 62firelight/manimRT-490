@@ -32,13 +32,13 @@ class RTSphereTest(ThreeDScene):
         
         ray_text = MathTex("\\text{Red Ray: }" + red_ray.get_equation())
         sphere_text = Tex("Sphere Transformations:")
-        translation_text = MathTex(f"\\text{{Translated to }} {str(translation)}", font_size=39)
         scale_text = MathTex(f"\\text{{Scaled by [{x_scale}, {y_scale}, {z_scale}]}}", font_size=39)
-        rotation_text = MathTex(f"\\text{{Rotated by [{x_rotation / DEGREES}, {y_rotation / DEGREES}, {z_rotation / DEGREES}]}}", font_size=39)
+        rotation_text = MathTex(f"\\text{{Rotated by [{x_rotation / DEGREES}, {y_rotation / DEGREES}, {z_rotation / DEGREES}] (deg)}}", font_size=39)
+        translation_text = MathTex(f"\\text{{Translated to }} {str(translation)}", font_size=39)
         
         self.set_camera_orientation(phi=60 * DEGREES, theta=-20 * DEGREES, frame_center=[0, 0, 2])
         
-        top_left_group_text = VGroup(ray_text, sphere_text, translation_text, scale_text, rotation_text).arrange(DOWN, center=False, aligned_edge=LEFT).to_corner(UL)
+        top_left_group_text = VGroup(ray_text, sphere_text, scale_text, rotation_text, translation_text).arrange(DOWN, center=False, aligned_edge=LEFT).to_corner(UL)
         
         self.add(axes, sphere, red_ray)
         self.add_fixed_in_frame_mobjects(top_left_group_text)

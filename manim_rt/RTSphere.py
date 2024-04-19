@@ -19,19 +19,8 @@ class RTSphere(Sphere):
         v_range: Sequence[float] = (0, PI),
         **kwargs,
     ) -> None:
-        # get 3x1 translation vector
-        self.translation = np.array([
-            [1, 0, 0, translation[0]],  
-            [0, 1, 0, translation[1]],
-            [0, 0, 1, translation[2]],
-            [0, 0, 0, 1],
-        ])
-        self.inverse_translation = np.array([
-            [1, 0, 0, -translation[0]],  
-            [0, 1, 0, -translation[1]],
-            [0, 0, 1, -translation[2]],
-            [0, 0, 0, 1],
-        ])
+        # TODO: group everything up to after finding the inverse
+        #       in its own method
         
         # get 3x3 scale matrix
         self.scale_matrix = np.array([
@@ -42,33 +31,34 @@ class RTSphere(Sphere):
         
         # get 3x3 rotation matrix
         self.rot_matrix = np.identity(3)
-        eps = np.finfo(float).eps
-        # if abs(x_rotation) < eps:
-        #     self.rot_matrix = np.matmul(rotation_matrix(x_rotation, RIGHT), self.rot_matrix)
-        # if abs(y_rotation) < eps:
-        #     self.rot_matrix = np.matmul(rotation_matrix(y_rotation, UP), self.rot_matrix)
-        # if abs(z_rotation) < eps:
-        #     self.rot_matrix = np.matmul(rotation_matrix(z_rotation, OUT), self.rot_matrix)
-        
         self.rot_matrix = np.matmul(rotation_matrix(x_rotation, RIGHT), self.rot_matrix)
         self.rot_matrix = np.matmul(rotation_matrix(y_rotation, UP), self.rot_matrix)
         self.rot_matrix = np.matmul(rotation_matrix(z_rotation, OUT), self.rot_matrix)
         
-        # combine scale and rotation matrices and compute inverse
+        # get 4x4 translation vector 
+        # (only last column changes)
+        self.translation = np.array([
+            [1, 0, 0, translation[0]],  
+            [0, 1, 0, translation[1]],
+            [0, 0, 1, translation[2]],
+            [0, 0, 0, 1],
+        ])
+        
+        # combine scale and rotation matrices
         self.transform = np.matmul(self.rot_matrix, self.scale_matrix)
         
-        # combine scale and rotation matrices with translation vector
-        self.transform = np.c_[self.transform, np.array([0, 0, 0])]
-        
         # ensure the linear transformation is stored as homogeneous coordinates
+        self.transform = np.c_[self.transform, np.array([0, 0, 0])]
         self.transform = np.r_[self.transform, np.array([[0, 0, 0, 1]])]
         
-        # multiply translation matrix with transformation matrix
+        # combine translation matrix with scale and rotation matrices
         self.transform = np.matmul(self.translation, self.transform)
         
         # calculate inverse
         self.inverse = np.linalg.inv(self.transform)
         
+        # keep track of the unit version of this
+        # for display purposes
         self.unit_form = Sphere()
 
         radius = 1
