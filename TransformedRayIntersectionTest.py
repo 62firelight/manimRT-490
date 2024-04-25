@@ -11,6 +11,7 @@ class TransformedRayIntersectionTest(ThreeDScene):
         axes = ThreeDAxes()
         red_ray = Ray3D([-3, 0, 0], RIGHT, 10, color=RED)
         sphere = Sphere([3, 1, 1], radius=2)
+        sphere.set_color(BLUE)
         
         hit_points = red_ray.get_intersection(sphere)
         
