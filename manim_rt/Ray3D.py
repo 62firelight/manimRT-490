@@ -142,7 +142,7 @@ class Ray3D(Arrow3D):
         color: ParsableManimColor = WHITE
     ):
         if len(self.hit_points) <= 0 or hit_point_number < 1 or hit_point_number > len(self.hit_points):
-            # TODO: Change this so that it throws an error
+            # TODO: Change this so that it throws an error and maybe break this down into separate statements
             return
         
         index = hit_point_number - 1
@@ -156,71 +156,59 @@ class Ray3D(Arrow3D):
     
     def get_unit_normal(
         self,
-        hit_point_number: int = 1,
-        color: ParsableManimColor = WHITE
+        hit_point_index: int
     ) -> Ray3D:
-        if len(self.hit_points) <= 0 or hit_point_number < 1 or hit_point_number > len(self.hit_points):
-            # TODO: Change this so that it throws an error
+        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            # TODO: Change this so that it throws an error and maybe break this down into separate statements
             return
         
-        index = hit_point_number - 1
+        unit_normal = normalize(self.normals[hit_point_index])
         
-        hit_point = self.hit_points[index]
-        
-        unit_normal = normalize(self.normals[index])
-        
-        unit_normal_obj = Ray3D(hit_point, unit_normal, color=color)
-        
-        return unit_normal_obj
+        return unit_normal
+    
+    def _get_unit_vector_towards_point(
+        self,
+        origin: np.ndarray,
+        point: np.ndarray
+    ):
+        return normalize(point - origin)
     
     def get_light_vector(
         self,
         light_source: Mobject,
-        hit_point_number: int = 1,
-        color: ParsableManimColor = WHITE
+        hit_point_index: int
     ) -> Ray3D:
-        if len(self.hit_points) <= 0 or hit_point_number < 1 or hit_point_number > len(self.hit_points):
-            # TODO: Change this so that it throws an error
+        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            # TODO: Change this so that it throws an error and maybe break this down into separate statements
             return
         
-        index = hit_point_number - 1
+        hit_point = self.hit_points[hit_point_index]
         
-        hit_point = self.hit_points[index]
+        unit_light_vector = self._get_unit_vector_towards_point(hit_point, light_source.get_center())
         
-        light_vector = light_source.get_center() - hit_point
-        unit_light_vector = normalize(light_vector)
-        
-        unit_light_vector_obj = Ray3D(hit_point, unit_light_vector, color=color)
-        
-        return unit_light_vector_obj
+        return unit_light_vector
     
     def get_reflected_light_vector(
         self,
         light_source: RTPointLightSource,
-        hit_point_number: int = 1,
-        color: ParsableManimColor = WHITE
-    ) -> Ray3D:
-        if len(self.hit_points) <= 0 or hit_point_number < 1 or hit_point_number > len(self.hit_points):
-            # TODO: Change this so that it throws an error
+        hit_point_index: int
+    ) -> list:
+        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            # TODO: Change this so that it throws an error and maybe break this down into separate statements
             return
         
-        index = hit_point_number - 1
+        hit_point = self.hit_points[hit_point_index]
         
-        hit_point = self.hit_points[index]
+        unit_normal = normalize(self.normals[hit_point_index])
         
-        unit_normal = normalize(self.normals[index])
-        
-        light_vector = light_source.get_center() - hit_point
-        unit_light_vector = normalize(light_vector)
+        unit_light_vector = self._get_unit_vector_towards_point(hit_point, light_source.get_center())
         
         reflected_light_vector = 2 * np.dot(unit_normal, unit_light_vector) * unit_normal - unit_light_vector
         
         # probably unnecessary, but normalize just in case
         unit_reflected_light_vector = normalize(reflected_light_vector)
         
-        unit_reflected_light_vector_obj = Ray3D(hit_point, unit_reflected_light_vector, color=color)
-        
-        return unit_reflected_light_vector_obj
+        return unit_reflected_light_vector
         
     # def get_viewer_vector(
     #     self,
