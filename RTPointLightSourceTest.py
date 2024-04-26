@@ -39,7 +39,7 @@ class RTPointLightSourceTest(ThreeDScene):
         viewer_vector_text = MathTex("\\hat{v}").next_to(viewer_vector.get_end(), IN)
         
         shadow_ray = ray.get_shadow_ray(0, light, color=LIGHT_BROWN)
-        shadow_ray_text = VGroup(Tex("Shadow Ray"), Tex("(no intersections)")).arrange(DOWN, aligned_edge=LEFT).next_to(shadow_ray.get_center(), RIGHT, buff=0.001)
+        shadow_ray_text = VGroup(Tex("\\textbf{Shadow Ray}"), Tex("(no intersections)")).arrange(DOWN, aligned_edge=LEFT).next_to(shadow_ray.get_center(), RIGHT, buff=0.001)
         
         # this sphere will intersect with the shadow ray above
         blocking_sphere = RTSphere([2, 0, 2])

@@ -241,7 +241,12 @@ class Ray3D(Arrow3D):
         
         light_vector = self.get_light_vector(hit_point_index, light_source)
         
-        distance_to_light_source = np.linalg.norm(hit_point - light_source.get_center())
+        # calculate offset so the end of the ray is not within the light source
+        offset = 0
+        if type(light_source) == RTPointLightSource:
+            offset = light_source.radius - offset
+        
+        distance_to_light_source = np.linalg.norm(hit_point - light_source.get_center()) - offset
         
         shadow_ray = Ray3D(hit_point, light_vector, distance_to_light_source, thickness, color)
         
