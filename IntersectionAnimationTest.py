@@ -17,7 +17,7 @@ class IntersectionAnimationTest(ThreeDScene):
         
         sphere = RTSphere([4, 0, 3])
         
-        hit_points = ray.get_intersection(sphere)
+        hit_points = sphere.get_intersection(ray)
         
         self.add(axes, sphere)
         # self.add(ray)

@@ -21,7 +21,7 @@ class RTSphereTest(ThreeDScene):
         
         red_ray = Ray3D(ORIGIN, OUT, 4, color=RED)
         
-        hit_points = red_ray.get_intersection(sphere)
+        hit_points = sphere.get_intersection(red_ray)
         
         for hit_point in hit_points:
             hit_point_obj = Dot3D(hit_point)

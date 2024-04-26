@@ -1,5 +1,6 @@
 from manim import *
 
+from manim_rt.RTSphere import RTSphere
 from manim_rt.Ray3D import Ray3D
 
 import numpy as np
@@ -10,10 +11,10 @@ class TransformedRayIntersectionTest(ThreeDScene):
         
         axes = ThreeDAxes()
         red_ray = Ray3D([-3, 0, 0], RIGHT, 10, color=RED)
-        sphere = Sphere([3, 1, 1], radius=2)
+        sphere = RTSphere([3, 1, 1], x_scale=2, y_scale=2, z_scale=2)
         sphere.set_color(BLUE)
         
-        hit_points = red_ray.get_intersection(sphere)
+        hit_points = sphere.get_intersection(red_ray)
         
         for hit_point in hit_points:
             hit_point_obj = Dot3D(hit_point)

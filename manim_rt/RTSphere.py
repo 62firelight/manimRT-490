@@ -3,6 +3,9 @@ from manim.typing import Point3D
 
 from typing import Sequence
 
+from manim_rt.Ray3D import Ray3D
+from manim_rt.Utility import solve_quadratic
+
 class RTSphere(Sphere):
     def __init__(
         self,
@@ -83,3 +86,41 @@ class RTSphere(Sphere):
         
         self.shift(translation)
         
+    def get_intersection(
+        self,
+        ray: Ray3D
+    ):      
+        # apply inverse transformation to the ray
+        start_inverse = np.matmul(self.inverse, ray.homogeneous_start)
+        direction_inverse = np.matmul(self.inverse, ray.homogeneous_direction)
+        
+        inhomogeneous_start_inverse = start_inverse[:3]
+        inhomogeneous_direction_inverse = direction_inverse[:3]
+        
+        a = np.dot(inhomogeneous_direction_inverse, inhomogeneous_direction_inverse)
+        b = 2 * np.dot(inhomogeneous_start_inverse, inhomogeneous_direction_inverse)
+        c = np.dot(inhomogeneous_start_inverse, inhomogeneous_start_inverse) - 1
+        
+        hit_locations = solve_quadratic(a, b, c)
+        
+        hit_points = []
+        normals = []
+        for hit_location in hit_locations:
+            # find hit point for the transformed ray
+            hit_point = start_inverse + hit_location * direction_inverse
+            
+            # apply original transformation to find actual hit point
+            hit_point = np.matmul(self.transform, hit_point)
+            
+            hit_point = hit_point[:3]
+            
+            hit_points.append(hit_point)
+            
+            # for spheres, the hit point will be the normal
+            # (i.e., perpendicular to the sphere's surface)
+            normals.append(hit_point - self.get_center())
+    
+        ray.hit_points = hit_points
+        ray.normals = normals
+    
+        return hit_points
