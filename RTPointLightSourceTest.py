@@ -38,5 +38,12 @@ class RTPointLightSourceTest(ThreeDScene):
         viewer_vector = Ray3D(hit_points[0], ray.get_viewer_vector(0, camera), color=GREEN)
         viewer_vector_text = MathTex("\\hat{v}").next_to(viewer_vector.get_end(), IN)
         
-        self.add(axes, sphere, light, camera, ray, unit_normal, light_vector, reflected_light_vector, viewer_vector)
-        self.add_fixed_orientation_mobjects(x_label, z_label, ray_text, unit_normal_text, light_vector_text, reflected_light_vector_text, viewer_vector_text)
+        shadow_ray = ray.get_shadow_ray(0, light, color=LIGHT_BROWN)
+        shadow_ray_text = VGroup(Tex("Shadow Ray"), Tex("(no intersections)")).arrange(DOWN, aligned_edge=LEFT).next_to(shadow_ray.get_center(), RIGHT, buff=0.001)
+        
+        # this sphere will intersect with the shadow ray above
+        blocking_sphere = RTSphere([2, 0, 2])
+        blocking_sphere.set_color(LIGHT_GRAY)
+        
+        self.add(axes, sphere, light, camera, ray, unit_normal, light_vector, reflected_light_vector, viewer_vector, shadow_ray)
+        self.add_fixed_orientation_mobjects(x_label, z_label, ray_text, unit_normal_text, light_vector_text, reflected_light_vector_text, viewer_vector_text, shadow_ray_text)

@@ -216,9 +216,33 @@ class Ray3D(Arrow3D):
         hit_point_index: int,
         camera: RTCamera
     ) -> list:
+        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            # TODO: Change this so that it throws an error and maybe break this down into separate statements
+            return
         
         hit_point = self.hit_points[hit_point_index]
         
         unit_viewer_vector = self._get_unit_vector_towards_point(hit_point, camera.projection_point_coords)
         
         return unit_viewer_vector
+    
+    def get_shadow_ray(
+        self,
+        hit_point_index: int,
+        light_source: RTPointLightSource,
+        thickness: float = 0.02,
+        color: ParsableManimColor = WHITE
+    ) -> Ray3D:
+        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            # TODO: Change this so that it throws an error and maybe break this down into separate statements
+            return
+        
+        hit_point = self.hit_points[hit_point_index]
+        
+        light_vector = self.get_light_vector(hit_point_index, light_source)
+        
+        distance_to_light_source = np.linalg.norm(hit_point - light_source.get_center())
+        
+        shadow_ray = Ray3D(hit_point, light_vector, distance_to_light_source, thickness, color)
+        
+        return shadow_ray
