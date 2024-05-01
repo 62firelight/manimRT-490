@@ -46,7 +46,7 @@ class RTPointLightSourceTest(ThreeDScene):
         
         # Light vector
         light_vector = Ray3D(first_hit_point, ray.get_light_vector(0, light), color=YELLOW)
-        light_vector_text = MathTex("\\hat{l}").next_to(light_vector.get_end(), RIGHT, buff=0.2)
+        light_vector_text = MathTex("\\hat{l}").next_to(light_vector.get_end(), 0.1 * RIGHT + OUT, buff=0.45)
         
         # Reflected light vector
         reflected_light_vector = Ray3D(first_hit_point, ray.get_reflected_light_vector(0, light), color=ORANGE)
@@ -64,6 +64,10 @@ class RTPointLightSourceTest(ThreeDScene):
         blocking_sphere = RTSphere([2, 0, 2])
         blocking_sphere.set_color(LIGHT_GRAY)
         
+        # Reflected ray (assuming the sphere is reflective)
+        reflected_ray = ray.get_reflected_ray(0, camera, color=GRAY)
+        reflected_ray_text = MathTex("\\hat{m}").next_to(reflected_ray.get_end(), RIGHT, buff=0.1)
+        
         # Add all relevants objects and text to the image
-        self.add(axes, sphere, light, camera, ray, first_hit_point_dot, second_hit_point_dot, unit_normal, light_vector, reflected_light_vector, viewer_vector, shadow_ray)
-        self.add_fixed_orientation_mobjects(x_label, z_label, ray_text, unit_normal_text, light_vector_text, reflected_light_vector_text, viewer_vector_text, shadow_ray_text)
+        self.add(axes, sphere, light, camera, ray, first_hit_point_dot, second_hit_point_dot, unit_normal, light_vector, reflected_light_vector, viewer_vector, shadow_ray, reflected_ray)
+        self.add_fixed_orientation_mobjects(x_label, z_label, ray_text, unit_normal_text, light_vector_text, reflected_light_vector_text, viewer_vector_text, shadow_ray_text, reflected_ray_text)

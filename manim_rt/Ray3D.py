@@ -139,3 +139,43 @@ class Ray3D(Arrow3D):
         shadow_ray = Ray3D(hit_point, light_vector, distance_to_light_source, thickness, color)
         
         return shadow_ray
+    
+    def get_reflected_vector(
+        self,
+        hit_point_index: int,
+        camera: RTCamera
+    ) -> list:
+        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            # TODO: Change this so that it throws an error and maybe break this down into separate statements
+            return
+        
+        viewer_vector = self.get_viewer_vector(hit_point_index, camera)
+        
+        unit_normal = self.get_unit_normal(hit_point_index)
+        
+        reflected_vector = 2 * np.dot(unit_normal, viewer_vector) * unit_normal - viewer_vector
+        
+        # probably unnecessary, but normalize just in case
+        unit_reflected_vector = normalize(reflected_vector)
+        
+        return unit_reflected_vector
+    
+    def get_reflected_ray(
+        self,
+        hit_point_index: int,
+        camera: RTCamera,
+        thickness: float = 0.02,
+        color: ParsableManimColor = WHITE
+    ) -> list:
+        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            # TODO: Change this so that it throws an error and maybe break this down into separate statements
+            return
+        
+        hit_point = self.hit_points[hit_point_index]
+        
+        unit_reflected_vector = self.get_reflected_vector(hit_point_index, camera)
+        
+        mirror_ray = Ray3D(hit_point, unit_reflected_vector, thickness=thickness, color=color)
+
+        return mirror_ray
+        
