@@ -1,8 +1,10 @@
 from __future__ import annotations
+from math import sqrt
 from manim import *
 
 import numpy as np
 
+from manim_rt import RTSphere
 from manim_rt.RTCamera import RTCamera
 from manim_rt.RTPointLightSource import RTPointLightSource
 
@@ -166,7 +168,7 @@ class Ray3D(Arrow3D):
         camera: RTCamera,
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
-    ) -> list:
+    ) -> Ray3D:
         if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
             # TODO: Change this so that it throws an error and maybe break this down into separate statements
             return
@@ -178,4 +180,40 @@ class Ray3D(Arrow3D):
         mirror_ray = Ray3D(hit_point, unit_reflected_vector, thickness=thickness, color=color)
 
         return mirror_ray
+    
+    def get_refracted_ray(
+        self,
+        object: RTSphere,
+        distance: float = 1,
+        refractive_index: float = 1,
+        thickness: float = 0.02,
+        color: ParsableManimColor = WHITE
+    ) -> Ray3D:
+        if len(self.hit_points) <= 0 and callable(getattr(object, "get_intersection")):
+            self.hit_points = object.get_intersection(self)
+        
+        if len(self.hit_points) <= 0:
+            # TODO: throw error
+            return
+        
+        n1 = refractive_index
+        n2 = object.refractive_index
+        
+        incident_ray = self.normalized_direction
+        
+        unit_normal = self.get_unit_normal(0)
+        
+        cos_angle = np.dot(unit_normal, incident_ray)
+        
+        transmitted_parallel = (n1 / n2) * (incident_ray + cos_angle * incident_ray)
+        transmitted_perpendicular = -1 * sqrt(1 - ((n1 * n1) / (n2 * n2)) * (1 - cos_angle * cos_angle)) * unit_normal
+        
+        print(transmitted_parallel, transmitted_perpendicular)
+        
+        transmitted_ray =  transmitted_parallel + transmitted_perpendicular
+        
+        transmitted_ray_obj = Ray3D(self.hit_points[0], transmitted_ray, distance=distance, thickness=thickness, color=color)
+        
+        return transmitted_ray_obj
+        
         
