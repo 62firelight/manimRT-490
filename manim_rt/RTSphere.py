@@ -16,6 +16,7 @@ class RTSphere(Sphere):
         x_rotation: float = 0,
         y_rotation: float = 0,
         z_rotation: float = 0,
+        refractive_index: float = 1,
         center: Point3D = ORIGIN,
         resolution: Sequence[int] | None = None,
         u_range: Sequence[float] = (0, TAU),
@@ -63,6 +64,8 @@ class RTSphere(Sphere):
         # keep track of the unit version of this
         # for display purposes
         self.unit_form = Sphere()
+        
+        self.refractive_index = refractive_index
 
         radius = 1
         
