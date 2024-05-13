@@ -17,10 +17,6 @@ class RTSphere(Sphere):
         y_rotation: float = 0,
         z_rotation: float = 0,
         refractive_index: float = 1,
-        center: Point3D = ORIGIN,
-        resolution: Sequence[int] | None = None,
-        u_range: Sequence[float] = (0, TAU),
-        v_range: Sequence[float] = (0, PI),
         **kwargs,
     ) -> None:
         # TODO: group everything up to after finding the inverse
@@ -66,15 +62,13 @@ class RTSphere(Sphere):
         self.unit_form = Sphere()
         
         self.refractive_index = refractive_index
-
-        radius = 1
         
         super().__init__(
-            center,
-            radius,
-            resolution,
-            u_range,
-            v_range,
+            center = ORIGIN,
+            radius = 1,
+            resolution = None,
+            u_range = (0, TAU),
+            v_range = (0, PI),
             **kwargs
         )
         
