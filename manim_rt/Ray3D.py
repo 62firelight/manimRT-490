@@ -4,7 +4,6 @@ from manim import *
 
 import numpy as np
 
-from manim_rt import RTSphere
 from manim_rt.RTCamera import RTCamera
 from manim_rt.RTPointLightSource import RTPointLightSource
 
@@ -183,7 +182,7 @@ class Ray3D(Arrow3D):
     
     def get_refracted_ray(
         self,
-        object: RTSphere,
+        object: Mobject,
         distance: float = 1,
         refractive_index: float = 1,
         thickness: float = 0.02,
