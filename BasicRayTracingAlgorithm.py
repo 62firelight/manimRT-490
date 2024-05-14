@@ -13,13 +13,12 @@ class BasicRayTracingAlgorithm(ThreeDScene):
         axes = ThreeDAxes()
         labels = axes.get_axis_labels()
         
-        red_sphere_location = [0, 2, 2]
+        red_sphere_location = [-1, 2, 2]
         
         # Camera
-        ray_start = [2, -3, 3]
-        camera = RTCamera(ray_start, plane_width=3, plane_height=3).rotate(90 * DEGREES, RIGHT).rotate(45 * DEGREES, OUT)
-        # ray = Ray3D(ray_start, np.subtract(red_sphere_location, ray_start), color=GREEN)
-        ray = camera.draw_ray(2, 2)
+        ray_start = [2, -2.5, 3]
+        camera = RTCamera(ray_start, plane_width=3, plane_height=3).rotate(90 * DEGREES, RIGHT).rotate(35 * DEGREES, OUT)
+        ray = camera.draw_ray(2, 2, 7.5)
         
         # Scene
         plane = RTPlane(x_scale=1.5, y_scale=4)

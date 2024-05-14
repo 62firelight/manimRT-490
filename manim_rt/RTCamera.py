@@ -248,9 +248,9 @@ class RTCamera(Axes):
         
         pixel_coords = self.c2p(pixel_x_coord - 0.5, pixel_y_coord + 0.5)
         
-        ray_direction = pixel_coords - self.projection_point_coords
+        ray_direction = pixel_coords - self.projection_point.get_center()
         
-        ray = Ray3D(self.projection_point_coords, ray_direction, distance=distance, thickness=thickness, color=color)
+        ray = Ray3D(self.projection_point.get_center(), ray_direction, distance=distance, thickness=thickness, color=color)
         
         # 1 unit of this ray's distance is equivalent to the camera's focal length
         
