@@ -4,7 +4,6 @@ from manim import *
 
 import numpy as np
 
-from manim_rt.RTCamera import RTCamera
 from manim_rt.RTPointLightSource import RTPointLightSource
 
 class Ray3D(Arrow3D):
@@ -103,7 +102,7 @@ class Ray3D(Arrow3D):
     def get_viewer_vector(
         self,
         hit_point_index: int,
-        camera: RTCamera
+        camera: Mobject
     ) -> list:
         if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
             # TODO: Change this so that it throws an error and maybe break this down into separate statements
@@ -144,7 +143,7 @@ class Ray3D(Arrow3D):
     def get_reflected_vector(
         self,
         hit_point_index: int,
-        camera: RTCamera
+        camera: Mobject
     ) -> list:
         if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
             # TODO: Change this so that it throws an error and maybe break this down into separate statements
@@ -164,7 +163,7 @@ class Ray3D(Arrow3D):
     def get_reflected_ray(
         self,
         hit_point_index: int,
-        camera: RTCamera,
+        camera: Mobject,
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
     ) -> Ray3D:

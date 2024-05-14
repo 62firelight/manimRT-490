@@ -8,7 +8,7 @@ from manim_rt.RTCamera import RTCamera
 
 class RTPointLightSourceTest(ThreeDScene):
     def construct(self):
-        self.set_camera_orientation(phi=90 * DEGREES, theta=-90 * DEGREES, frame_center=[0, 0, 1], zoom=1.5])
+        self.set_camera_orientation(phi=90 * DEGREES, theta=-90 * DEGREES, frame_center=[0, 0, 1], zoom=1.5)
         
         # Axes and X + Z labels
         axes = ThreeDAxes(x_length=8)

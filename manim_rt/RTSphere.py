@@ -17,6 +17,8 @@ class RTSphere(Sphere):
         y_rotation: float = 0,
         z_rotation: float = 0,
         refractive_index: float = 1,
+        color=WHITE,
+        opacity=1,
         **kwargs,
     ) -> None:
         # TODO: group everything up to after finding the inverse
@@ -71,6 +73,9 @@ class RTSphere(Sphere):
             v_range = (0, PI),
             **kwargs
         )
+        
+        self.set_color(color)
+        self.set_opacity(opacity)
         
         # TODO: maybe call apply_points_function_about_vector() using our computed transform here?
         self.stretch(x_scale, 0)

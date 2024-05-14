@@ -4,7 +4,7 @@ from manim import *
 
 import numpy as np
 
-import manim_rt.Ray3D
+from manim_rt.Ray3D import Ray3D
 
 def clamp(n, min, max): 
         """
@@ -26,8 +26,8 @@ class RTCamera(Axes):
         projection_point_coords: list = ORIGIN,
         plane_width: int = 16,
         plane_height: int = 9,
-        total_width: int = 5,
-        total_height: int = 5,
+        total_width: int = 1,
+        total_height: int = 1,
         focal_length: int = 1,
         background_line_style: dict[str, Any] | None = None,
         faded_line_style: dict[str, Any] | None = None,
@@ -250,7 +250,7 @@ class RTCamera(Axes):
         
         ray_direction = pixel_coords - self.projection_point_coords
         
-        ray = manim_rt.Ray3D(self.projection_point_coords, ray_direction, distance=distance, thickness=thickness, color=color)
+        ray = Ray3D(self.projection_point_coords, ray_direction, distance=distance, thickness=thickness, color=color)
         
         # 1 unit of this ray's distance is equivalent to the camera's focal length
         
