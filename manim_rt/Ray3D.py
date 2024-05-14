@@ -4,7 +4,6 @@ from manim import *
 
 import numpy as np
 
-from manim_rt import RTSphere
 from manim_rt.RTCamera import RTCamera
 from manim_rt.RTPointLightSource import RTPointLightSource
 
@@ -183,7 +182,7 @@ class Ray3D(Arrow3D):
     
     def get_refracted_ray(
         self,
-        object: RTSphere,
+        object: Mobject,
         distance: float = 1,
         refractive_index: float = 1,
         thickness: float = 0.02,
@@ -207,8 +206,6 @@ class Ray3D(Arrow3D):
         
         transmitted_parallel = (n1 / n2) * (incident_ray + cos_angle * incident_ray)
         transmitted_perpendicular = -1 * sqrt(1 - ((n1 * n1) / (n2 * n2)) * (1 - cos_angle * cos_angle)) * unit_normal
-        
-        print(transmitted_parallel, transmitted_perpendicular)
         
         transmitted_ray =  transmitted_parallel + transmitted_perpendicular
         

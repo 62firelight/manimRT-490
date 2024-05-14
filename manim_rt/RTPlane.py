@@ -1,12 +1,9 @@
-from manim import *
-from manim.typing import Point3D
-
 from typing import Sequence
+from manim import *
 
 from manim_rt.Ray3D import Ray3D
-from manim_rt.Utility import solve_quadratic
 
-class RTSphere(Sphere):
+class RTPlane(Square):
     def __init__(
         self,
         translation: Sequence[float] = [0, 0, 0],
@@ -17,11 +14,8 @@ class RTSphere(Sphere):
         y_rotation: float = 0,
         z_rotation: float = 0,
         refractive_index: float = 1,
-        **kwargs,
-    ) -> None:
-        # TODO: group everything up to after finding the inverse
-        #       in its own method
-        
+        **kwargs
+    ):
         # get 3x3 scale matrix
         self.scale_matrix = np.array([
             [x_scale, 0, 0],
@@ -57,22 +51,21 @@ class RTSphere(Sphere):
         # calculate inverse
         self.inverse = np.linalg.inv(self.transform)
         
-        # keep track of the unit version of this
-        # for display purposes
-        self.unit_form = Sphere()
-        
         self.refractive_index = refractive_index
         
+        # keep track of the unit version of this
+        # for display purposes
+        self.unit_form = Square(fill_color=BLUE, fill_opacity=1, stroke_opacity=0)
+        
         super().__init__(
-            center = ORIGIN,
-            radius = 1,
-            resolution = None,
-            u_range = (0, TAU),
-            v_range = (0, PI),
+            side_length=2,
+            fill_color=BLUE,
+            fill_opacity=1,
+            stroke_opacity=0,
+            shade_in_3d=True,
             **kwargs
         )
         
-        # TODO: maybe call apply_points_function_about_vector() using our computed transform here?
         self.stretch(x_scale, 0)
         self.stretch(y_scale, 1)
         self.stretch(z_scale, 2)
@@ -94,11 +87,11 @@ class RTSphere(Sphere):
         inhomogeneous_start_inverse = start_inverse[:3]
         inhomogeneous_direction_inverse = direction_inverse[:3]
         
-        a = np.dot(inhomogeneous_direction_inverse, inhomogeneous_direction_inverse)
-        b = 2 * np.dot(inhomogeneous_start_inverse, inhomogeneous_direction_inverse)
-        c = np.dot(inhomogeneous_start_inverse, inhomogeneous_start_inverse) - 1
+        z0 = start_inverse[2]
+        dz = direction_inverse[2]
         
-        hit_locations = solve_quadratic(a, b, c)
+        hit_location = -z0 / dz
+        hit_locations = [hit_location]
         
         hit_points = []
         normals = []
@@ -113,9 +106,16 @@ class RTSphere(Sphere):
             
             hit_points.append(hit_point)
             
-            # for spheres, the hit point will be the normal
-            # (i.e., perpendicular to the sphere's surface)
-            normals.append(hit_point - self.get_center())
+            # for planes, the normal will point in either +ve or -ve Z direction
+            normal = [0, 0, 1, 0]
+            if np.dot(normal[:3], ray.direction) > 0:
+                normal = [0, 0, -1, 0]
+            
+            inverse_transform_transpose = np.linalg.inv(np.transpose(self.transform))
+            
+            normal_transformed = np.matmul(inverse_transform_transpose, normal)
+            
+            normals.append(normal_transformed[:3])
     
         ray.hit_points = hit_points
         ray.normals = normals

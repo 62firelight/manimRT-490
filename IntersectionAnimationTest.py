@@ -26,6 +26,7 @@ class IntersectionAnimationTest(ThreeDScene):
         self.add_fixed_orientation_mobjects(x_label, z_label)
         
         # Animation begins here
+        self.begin_ambient_camera_rotation(0)
         self.play(Create(ray))
         for hit_point in hit_points:
             self.play(GrowFromCenter(Dot3D(hit_point, color=YELLOW, radius=0.12)))
