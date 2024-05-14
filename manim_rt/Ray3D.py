@@ -207,8 +207,6 @@ class Ray3D(Arrow3D):
         transmitted_parallel = (n1 / n2) * (incident_ray + cos_angle * incident_ray)
         transmitted_perpendicular = -1 * sqrt(1 - ((n1 * n1) / (n2 * n2)) * (1 - cos_angle * cos_angle)) * unit_normal
         
-        print(transmitted_parallel, transmitted_perpendicular)
-        
         transmitted_ray =  transmitted_parallel + transmitted_perpendicular
         
         transmitted_ray_obj = Ray3D(self.hit_points[0], transmitted_ray, distance=distance, thickness=thickness, color=color)
