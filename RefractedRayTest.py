@@ -12,10 +12,6 @@ class RefractedRayTest(ThreeDScene):
         axes = ThreeDAxes()
         labels = axes.get_axis_labels()
         
-        # sphere = RTSphere(refractive_index=1.7)
-        # sphere.set_color(WHITE)
-        # sphere.set_opacity(0.25)
-        
         plane = RTPlane()
         
         ray_start = [-1, 1, 0.5]
