@@ -201,12 +201,31 @@ class Ray3D(Arrow3D):
         
         unit_normal = self.get_unit_normal(0)
         
-        cos_angle = np.dot(unit_normal, incident_ray)
+        cos_angle = min(np.dot(-incident_ray, unit_normal), 1)
         
-        transmitted_parallel = (n1 / n2) * (incident_ray + cos_angle * incident_ray)
-        transmitted_perpendicular = -1 * sqrt(1 - ((n1 * n1) / (n2 * n2)) * (1 - cos_angle * cos_angle)) * unit_normal
+        transmitted_perpendicular = (n1 / n2) * (incident_ray + cos_angle * unit_normal)
         
-        transmitted_ray =  transmitted_parallel + transmitted_perpendicular
+        tp_mag = np.linalg.norm(transmitted_perpendicular)
+        
+        if tp_mag > 1:
+            # simulate total internal refraction
+            # i.e. n1/n2 * sin(theta) > 1
+            reflected_vector = 2 * np.dot(unit_normal, -incident_ray) * unit_normal + incident_ray
+            transmitted_ray = normalize(reflected_vector)
+        else:
+            # simulate refraction
+            sin_angle = sqrt(1 - (tp_mag * tp_mag))
+            transmitted_parallel = -sin_angle * unit_normal
+            
+            transmitted_ray =  transmitted_parallel + transmitted_perpendicular
+        
+        # if n1 * sin_angle > 1:
+        #     reflected_vector = 2 * np.dot(unit_normal, incident_ray) * unit_normal - incident_ray
+        #     transmitted_ray = normalize(reflected_vector)
+        # else:
+        #     transmitted_parallel = -sin_angle * unit_normal
+            
+        #     transmitted_ray =  transmitted_parallel + transmitted_perpendicular
         
         transmitted_ray_obj = Ray3D(self.hit_points[0], transmitted_ray, distance=distance, thickness=thickness, color=color)
         
