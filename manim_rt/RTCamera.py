@@ -91,7 +91,7 @@ class RTCamera(Axes):
     
         plane_z_coord = projection_point_coords[2] - focal_length
     
-        self.projection_point = Dot3D(projection_point_coords, radius = 0.15, color = WHITE)
+        self.projection_point = Dot3D(projection_point_coords, color = WHITE)
         
         self.move_to([projection_point_coords[0], projection_point_coords[1], plane_z_coord])
         
