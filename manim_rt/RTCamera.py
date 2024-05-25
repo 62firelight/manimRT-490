@@ -236,7 +236,14 @@ class RTCamera(Axes):
                     lines2.add(new_line)
         return lines1, lines2
     
-    def draw_ray(self, x, y, distance=None, thickness=0.02, color=BLUE):
+    def draw_ray(
+        self,
+        x: float, 
+        y: float, 
+        distance: float = 1, 
+        thickness: float = 0.02, 
+        color: ParsableManimColor = BLUE
+    ):
         if distance is None:
             distance = self.focal_length * 2
         
@@ -256,4 +263,30 @@ class RTCamera(Axes):
         
         return ray
     
+    def colour_pixel(
+        self,
+        x: float, 
+        y: float,  
+        color: ParsableManimColor = BLUE
+    ):
+        pixel_x_coord = round(x)
+        pixel_y_coord = round(y)
+        
+        pixel_x_coord = clamp(pixel_x_coord, 1, self.plane_width)
+        pixel_y_coord = -clamp(pixel_y_coord, 1, self.plane_height)
+        
+        pixel_coords = self.c2p(pixel_x_coord - 0.5, pixel_y_coord + 0.5)
+        
+        square = Square(side_length=1, stroke_opacity=0, fill_opacity=1, fill_color=color, shade_in_3d=True)
+        
+        # Scale square according to the camera dimensions
+        square_width = self.total_width / self.plane_width
+        square_height = self.total_height / self.plane_height
+        
+        square.stretch(square_width, 0)
+        square.stretch(square_height, 1)
+        
+        square.shift(pixel_coords)
+        
+        return square
     
