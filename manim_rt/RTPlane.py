@@ -117,6 +117,7 @@ class RTPlane(Square):
             
             normals.append(normal_transformed[:3])
     
+        ray.hit_locations = hit_locations
         ray.hit_points = hit_points
         ray.normals = normals
     

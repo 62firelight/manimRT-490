@@ -12,12 +12,34 @@ class Ray3D(Arrow3D):
         start: np.ndarray = LEFT,
         direction: np.ndarray = RIGHT,
         distance: float = 1,
+        intersecting_objects: np.ndarray = [],
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE,
         **kwargs,
     ) -> None:
+        self.start = start
         self.direction = direction
+        self.distance = distance
+
         self.normalized_direction = normalize(direction)
+        
+        self.homogeneous_start = np.append(start, 1)
+        self.homogeneous_direction = np.append(direction, 0)
+        
+        self.hit_locations = []
+        
+        if len(intersecting_objects) > 0:
+            for object in intersecting_objects:
+                object.get_intersection(self)
+                
+            if len(self.hit_locations) > 0:
+                print("automatic distance")
+                distance = self.hit_locations[0]
+        else:
+            self.hit_points = []
+            self.normals = []
+            
+        print(start, distance, self.hit_points, self.hit_locations)
         
         end = start + distance * np.array(direction)
         
@@ -25,13 +47,8 @@ class Ray3D(Arrow3D):
             start=start, end=end, thickness=thickness, color=color, **kwargs
         )
         
-        self.distance = distance
-        
-        self.homogeneous_start = np.append(start, 1)
-        self.homogeneous_direction = np.append(direction, 0)
-        
-        self.hit_points = []
-        self.normals = []
+        self.thickness = thickness
+        self.color = color
         
     def get_equation(self, homogenous_coordinates=False) -> str:
         # TODO: Round any floating point numbers 
@@ -183,6 +200,7 @@ class Ray3D(Arrow3D):
         self,
         object: Mobject,
         distance: float = 1,
+        intersecting_objects: np.ndarray = [],
         refractive_index: float = 1,
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
@@ -227,8 +245,11 @@ class Ray3D(Arrow3D):
             
         #     transmitted_ray =  transmitted_parallel + transmitted_perpendicular
         
-        transmitted_ray_obj = Ray3D(self.hit_points[0], transmitted_ray, distance=distance, thickness=thickness, color=color)
+        transmitted_ray_obj = Ray3D(self.hit_points[0], transmitted_ray, distance=distance, intersecting_objects=intersecting_objects, thickness=thickness, color=color)
         
         return transmitted_ray_obj
+    
+    def render_new_ray(self, distance = 1):
+        return Ray3D(self.start, self.direction, distance, self.thickness, self.color)
         
         

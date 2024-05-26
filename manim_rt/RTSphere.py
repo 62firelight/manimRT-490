@@ -122,6 +122,7 @@ class RTSphere(Sphere):
             # (i.e., perpendicular to the sphere's surface)
             normals.append(hit_point - self.get_center())
     
+        ray.hit_locations = hit_locations
         ray.hit_points = hit_points
         ray.normals = normals
     
