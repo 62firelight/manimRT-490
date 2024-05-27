@@ -44,10 +44,12 @@ class Ray3D(Arrow3D):
         else:
             start = self.homogeneous_start
             direction = self.homogeneous_direction
-            
+        
+        # Convert to integer array if there no floats
+        # Likely optional as array2string prevents trailing 
+        # dots and zeros from appearing
         if all([i.is_integer() for i in start]):
             start = start.astype(int)
-        
         if all([i.is_integer() for i in direction]):
             direction = direction.astype(int)
         

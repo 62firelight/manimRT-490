@@ -17,7 +17,7 @@ class BasicRayTracingAlgorithm(ThreeDScene):
         
         # Camera
         ray_start = [2, -2.5, 3]
-        camera = RTCamera(ray_start, plane_width=3, plane_height=3).rotate(90 * DEGREES, RIGHT).rotate(35 * DEGREES, OUT)
+        camera = RTCamera(ray_start, image_width=3, image_height=3).rotate(90 * DEGREES, RIGHT).rotate(35 * DEGREES, OUT)
         partial_ray = camera.draw_ray(2, 2, 2)
         ray = camera.draw_ray(2, 2, 7.5)
         # ray1 = camera.draw_ray(1, 1, 7.5)

@@ -12,8 +12,8 @@ class RTCamera(Axes):
     def __init__(
         self,
         projection_point_coords: list = ORIGIN,
-        plane_width: int = 16,
-        plane_height: int = 9,
+        image_width: int = 16,
+        image_height: int = 9,
         total_width: int = 1,
         total_height: int = 1,
         focal_length: int = 1,
@@ -24,17 +24,19 @@ class RTCamera(Axes):
         **kwargs: dict[str, Any],
     ):
         self.projection_point_coords = projection_point_coords
-        x_range=[0, plane_width, 1]
-        y_range=[-plane_height, 0, 1]
+        x_range=[0, image_width, 1]
+        y_range=[-image_height, 0, 1]
         x_length=total_width
         y_length=total_height
         self.focal_length = focal_length
-        self.plane_width = plane_width
-        self.plane_height = plane_height
+        self.image_width = image_width
+        self.image_height = image_height
         self.total_width = total_width
         self.total_height = total_height
         
-        # configs
+        # Configs 
+        # ManimRT changes stroke_width from 2 to 0 
+        # to hide the white lines from the Axes
         self.axis_config = {
             "stroke_width": 2,
             "include_ticks": False,
@@ -85,15 +87,15 @@ class RTCamera(Axes):
         
         # Determine corner coordinates
         top_left_coords = self.c2p(0, 0)
-        top_right_coords = self.c2p(plane_width, 0)
-        bottom_left_coords = self.c2p(0, -plane_height)
-        bottom_right_coords = self.c2p(plane_width, -plane_height)
+        top_right_coords = self.c2p(image_width, 0)
+        bottom_left_coords = self.c2p(0, -image_height)
+        bottom_right_coords = self.c2p(image_width, -image_height)
         
         # Frustum made up of 4 3D lines
-        self.top_left = Line3D(projection_point_coords, [top_left_coords[0], top_left_coords[1], plane_z_coord], color=WHITE)
-        self.top_right = Line3D(projection_point_coords, [top_right_coords[0], top_right_coords[1], plane_z_coord], color=WHITE)
-        self.bottom_left = Line3D(projection_point_coords, [bottom_left_coords[0], bottom_left_coords[1], plane_z_coord], color=WHITE)
-        self.bottom_right = Line3D(projection_point_coords, [bottom_right_coords[0], bottom_right_coords[1], plane_z_coord], color=WHITE)
+        self.top_left = Line3D(projection_point_coords, [top_left_coords[0], top_left_coords[1], plane_z_coord], thickness=0.01, color=WHITE)
+        self.top_right = Line3D(projection_point_coords, [top_right_coords[0], top_right_coords[1], plane_z_coord], thickness=0.01, color=WHITE)
+        self.bottom_left = Line3D(projection_point_coords, [bottom_left_coords[0], bottom_left_coords[1], plane_z_coord], thickness=0.01, color=WHITE)
+        self.bottom_right = Line3D(projection_point_coords, [bottom_right_coords[0], bottom_right_coords[1], plane_z_coord], thickness=0.01, color=WHITE)
         
         self.add_to_back(
             self.projection_point,
@@ -208,6 +210,10 @@ class RTCamera(Axes):
 
         # min/max used in case range does not include 0. i.e. if (2,6):
         # the range becomes (0,4), not (0,6).
+        
+        # ManimRT adds or subtracts 1 to these ranges to ensure
+        # that the the grid looks like it is contained within a
+        # blue box
         ranges = (
             [0],
             np.arange(step, min(x_max - x_min, x_max), step),
@@ -238,8 +244,8 @@ class RTCamera(Axes):
         pixel_x_coord = round(x)
         pixel_y_coord = round(y)
         
-        pixel_x_coord = clamp(pixel_x_coord, 1, self.plane_width)
-        pixel_y_coord = -clamp(pixel_y_coord, 1, self.plane_height)
+        pixel_x_coord = clamp(pixel_x_coord, 1, self.image_width)
+        pixel_y_coord = -clamp(pixel_y_coord, 1, self.image_height)
         
         pixel_coords = self.c2p(pixel_x_coord - 0.5, pixel_y_coord + 0.5)
         
@@ -260,16 +266,16 @@ class RTCamera(Axes):
         pixel_x_coord = round(x)
         pixel_y_coord = round(y)
         
-        pixel_x_coord = clamp(pixel_x_coord, 1, self.plane_width)
-        pixel_y_coord = -clamp(pixel_y_coord, 1, self.plane_height)
+        pixel_x_coord = clamp(pixel_x_coord, 1, self.image_width)
+        pixel_y_coord = -clamp(pixel_y_coord, 1, self.image_height)
         
         pixel_coords = self.c2p(pixel_x_coord - 0.5, pixel_y_coord + 0.5)
         
         square = Square(side_length=1, stroke_opacity=0, fill_opacity=1, fill_color=color, shade_in_3d=True)
         
         # Scale square according to the camera dimensions
-        square_width = self.total_width / self.plane_width
-        square_height = self.total_height / self.plane_height
+        square_width = self.total_width / self.image_width
+        square_height = self.total_height / self.image_height
         
         square.stretch(square_width, 0)
         square.stretch(square_height, 1)

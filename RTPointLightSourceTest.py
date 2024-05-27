@@ -16,7 +16,7 @@ class RTPointLightSourceTest(ThreeDScene):
         z_label = MathTex("z").next_to(axes.get_z_axis().get_end())
         
         # Camera
-        camera = RTCamera([-3, 0, 3], focal_length=1, plane_width=3, plane_height=3, total_width=1, total_height=1)
+        camera = RTCamera([-3, 0, 3], focal_length=1, image_width=3, image_height=3, total_width=1, total_height=1)
         camera.rotate(-45 * DEGREES, UP, camera.projection_point_coords)
         
         # Ray
