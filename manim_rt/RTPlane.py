@@ -58,7 +58,7 @@ class RTPlane(Square):
         self.unit_form = Square(fill_color=BLUE, fill_opacity=1, stroke_opacity=0)
         
         super().__init__(
-            side_length=2,
+            side_length=1,
             fill_color=BLUE,
             fill_opacity=1,
             stroke_opacity=0,

@@ -228,8 +228,7 @@ class RTCamera(Axes):
                     lines1.add(new_line)
                 else:
                     lines2.add(new_line)
-        return lines1, lines2
-    
+        return lines1, lines2     
     def draw_ray(
         self,
         x: float, 
