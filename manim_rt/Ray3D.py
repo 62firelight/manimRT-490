@@ -33,13 +33,29 @@ class Ray3D(Arrow3D):
         self.hit_points = []
         self.normals = []
         
-    def get_equation(self, homogenous_coordinates=False) -> str:
-        # TODO: Round any floating point numbers 
-        # TODO: Hide .0 for float numbers that are whole for consistency
+    def get_equation(
+        self, 
+        homogenous_coordinates=False, 
+        decimal_places=1
+    ) -> str:
         if not homogenous_coordinates:
-            equation = "{} + \\lambda {}".format(np.ndarray.tolist(self.start), np.ndarray.tolist(self.direction))
+            start = self.start
+            direction = self.direction
         else:
-            equation = "{} + \\lambda {}".format(np.ndarray.tolist(self.homogeneous_start), np.ndarray.tolist(self.homogeneous_direction))
+            start = self.homogeneous_start
+            direction = self.homogeneous_direction
+            
+        if all([i.is_integer() for i in start]):
+            start = start.astype(int)
+        
+        if all([i.is_integer() for i in direction]):
+            direction = direction.astype(int)
+        
+        # Formatter could be tidied up a bit
+        start = np.array2string(start, separator=",", formatter={'float': lambda x: "%.0f" % x if x.is_integer() else "%.{}f".format(decimal_places) % x})
+        direction = np.array2string(direction, precision=decimal_places, separator=",")
+            
+        equation = "{} + \\lambda {}".format(start, direction)
         
         return equation
     
@@ -47,9 +63,11 @@ class Ray3D(Arrow3D):
         self,
         hit_point_index: int
     ) -> Ray3D:
-        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
-            # TODO: Change this so that it throws an error and maybe break this down into separate statements
-            return
+        if len(self.hit_points) <= 0:
+            raise Exception("No intersections were calculated for this ray")
+        
+        if hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            raise Exception("Provided hit point index was out of bounds")
         
         unit_normal = normalize(self.normals[hit_point_index])
         
@@ -67,9 +85,11 @@ class Ray3D(Arrow3D):
         hit_point_index: int,
         light_source: RTPointLightSource
     ) -> Ray3D:
-        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
-            # TODO: Change this so that it throws an error and maybe break this down into separate statements
-            return
+        if len(self.hit_points) <= 0:
+            raise Exception("No intersections were calculated for this ray")
+        
+        if hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            raise Exception("Provided hit point index was out of bounds")
         
         hit_point = self.hit_points[hit_point_index]
         
@@ -82,9 +102,11 @@ class Ray3D(Arrow3D):
         hit_point_index: int,
         light_source: RTPointLightSource
     ) -> list:
-        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
-            # TODO: Change this so that it throws an error and maybe break this down into separate statements
-            return
+        if len(self.hit_points) <= 0:
+            raise Exception("No intersections were calculated for this ray")
+        
+        if hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            raise Exception("Provided hit point index was out of bounds")
         
         hit_point = self.hit_points[hit_point_index]
         
@@ -104,9 +126,11 @@ class Ray3D(Arrow3D):
         hit_point_index: int,
         camera: Mobject
     ) -> list:
-        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
-            # TODO: Change this so that it throws an error and maybe break this down into separate statements
-            return
+        if len(self.hit_points) <= 0:
+            raise Exception("No intersections were calculated for this ray")
+        
+        if hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            raise Exception("Provided hit point index was out of bounds")
         
         hit_point = self.hit_points[hit_point_index]
         
@@ -121,9 +145,11 @@ class Ray3D(Arrow3D):
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
     ) -> Ray3D:
-        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
-            # TODO: Change this so that it throws an error and maybe break this down into separate statements
-            return
+        if len(self.hit_points) <= 0:
+            raise Exception("No intersections were calculated for this ray")
+        
+        if hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            raise Exception("Provided hit point index was out of bounds")
         
         hit_point = self.hit_points[hit_point_index]
         
@@ -145,9 +171,11 @@ class Ray3D(Arrow3D):
         hit_point_index: int,
         camera: Mobject
     ) -> list:
-        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
-            # TODO: Change this so that it throws an error and maybe break this down into separate statements
-            return
+        if len(self.hit_points) <= 0:
+            raise Exception("No intersections were calculated for this ray")
+        
+        if hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            raise Exception("Provided hit point index was out of bounds")
         
         viewer_vector = self.get_viewer_vector(hit_point_index, camera)
         
@@ -167,9 +195,11 @@ class Ray3D(Arrow3D):
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
     ) -> Ray3D:
-        if len(self.hit_points) <= 0 or hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
-            # TODO: Change this so that it throws an error and maybe break this down into separate statements
-            return
+        if len(self.hit_points) <= 0:
+            raise Exception("No intersections were calculated for this ray")
+        
+        if hit_point_index < 0 or hit_point_index > len(self.hit_points) - 1:
+            raise Exception("Provided hit point index was out of bounds")
         
         hit_point = self.hit_points[hit_point_index]
         
@@ -191,8 +221,7 @@ class Ray3D(Arrow3D):
             self.hit_points = object.get_intersection(self)
         
         if len(self.hit_points) <= 0:
-            # TODO: throw error
-            return
+            raise Exception("No hit points were calculated for this ray")
         
         n1 = refractive_index
         n2 = object.refractive_index

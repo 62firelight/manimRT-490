@@ -5,20 +5,8 @@ from manim import *
 import numpy as np
 
 from manim_rt.Ray3D import Ray3D
+from manim_rt.Utility import clamp
 
-def clamp(n, min, max): 
-        """
-        Quick helper function for limiting numbers.
-        
-        TODO: Separate this into its own Helper file 
-        source: https://www.geeksforgeeks.org/how-to-clamp-floating-numbers-in-python/ 
-        """
-        if n < min: 
-            return min
-        elif n > max: 
-            return max
-        else: 
-            return n 
 
 class RTCamera(Axes):
     def __init__(

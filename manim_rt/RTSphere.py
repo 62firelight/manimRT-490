@@ -20,10 +20,7 @@ class RTSphere(Sphere):
         color=WHITE,
         opacity=1,
         **kwargs,
-    ) -> None:
-        # TODO: group everything up to after finding the inverse
-        #       in its own method
-        
+    ) -> None:        
         # get 3x3 scale matrix
         self.scale_matrix = np.array([
             [x_scale, 0, 0],
@@ -77,7 +74,6 @@ class RTSphere(Sphere):
         self.set_color(color)
         self.set_opacity(opacity)
         
-        # TODO: maybe call apply_points_function_about_vector() using our computed transform here?
         self.stretch(x_scale, 0)
         self.stretch(y_scale, 1)
         self.stretch(z_scale, 2)
