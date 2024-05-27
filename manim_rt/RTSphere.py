@@ -122,3 +122,23 @@ class RTSphere(Sphere):
         ray.normals = normals
     
         return hit_points
+    
+    @staticmethod
+    def generate_sphere(
+        ray: Ray3D,
+        distance_along_ray: float = 1,
+        x_scale: float = 1,
+        y_scale: float = 1,
+        z_scale: float = 1,
+        x_rotation: float = 0,
+        y_rotation: float = 0,
+        z_rotation: float = 0,
+        refractive_index: float = 1,
+        color: ParsableManimColor = WHITE,
+        opacity: float = 1,
+    ):
+        sphere_center = ray.start + distance_along_ray * np.array(ray.direction)
+        
+        sphere = RTSphere(sphere_center, x_scale, y_scale, z_scale, x_rotation, y_rotation, z_rotation, refractive_index, color)
+        
+        return sphere
