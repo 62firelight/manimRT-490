@@ -55,7 +55,7 @@ class RTPlane(Square):
         
         # keep track of the unit version of this
         # for display purposes
-        self.unit_form = Square(fill_color=BLUE, fill_opacity=1, stroke_opacity=0)
+        self.unit_form = Square(side_length=1, fill_color=BLUE, fill_opacity=1, stroke_opacity=0)
         
         super().__init__(
             side_length=1,
