@@ -1,6 +1,10 @@
 import math
 
-def solve_quadratic(a, b, c) -> list:
+def solve_quadratic(
+        a: float,
+        b: float,
+        c: float
+    ) -> list:
     # b^2 - 4ac
     discriminant = b * b - 4 * a * c
     
@@ -15,10 +19,16 @@ def solve_quadratic(a, b, c) -> list:
         
     return [x_1, x_2]
 
-def is_whole_number(number) -> bool:
+def is_whole_number(
+        number: float
+    ) -> bool:
     return number % 1 == 0
 
-def clamp(n, min, max): 
+def clamp(
+        n: float,
+        min: float,
+        max: float
+    ): 
         """
         Quick helper function for limiting numbers.
         
