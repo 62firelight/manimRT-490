@@ -26,7 +26,7 @@ class TransformedRayIntersectionTest(ThreeDScene):
         red_ray_equation = MathTex(red_ray.get_equation(), color=RED)
         green_ray_equation = MathTex(green_ray.get_equation(), color=GREEN)
         
-        equations = VGroup(red_ray_equation, green_ray_equation).arrange(DOWN, center=False, aligned_edge=LEFT).to_corner(DL)
+        equations = VGroup(red_ray_equation, green_ray_equation).arrange(DOWN, center=False, aligned_edge=LEFT).to_corner(DL).shift([0, 1, 0])
         
         self.add(axes, red_ray, green_ray, sphere)
         self.add_fixed_in_frame_mobjects(equations)
