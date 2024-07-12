@@ -38,7 +38,7 @@ class RTCamera(Axes):
         # ManimRT changes stroke_width from 2 to 0 
         # to hide the white lines from the Axes
         self.axis_config = {
-            "stroke_width": 2,
+            "stroke_width": 0,
             "include_ticks": False,
             "include_tip": False,
             "line_to_number_buff": SMALL_BUFF,
@@ -125,7 +125,7 @@ class RTCamera(Axes):
             **self.faded_line_style,
         )
         self.add_to_back(
-            self.faded_lines,
+            # self.faded_lines,
             self.background_lines,
         )
         
@@ -216,8 +216,8 @@ class RTCamera(Axes):
         # blue box
         ranges = (
             [0],
-            np.arange(step, min(x_max - x_min, x_max), step),
-            np.arange(-step, max(x_min - x_max, x_min), -step),
+            np.arange(step, min(x_max - x_min, x_max) + 1, step),
+            np.arange(-step, max(x_min - x_max, x_min) - 1, -step),
         )
 
         for inputs in ranges:
@@ -228,7 +228,8 @@ class RTCamera(Axes):
                     lines1.add(new_line)
                 else:
                     lines2.add(new_line)
-        return lines1, lines2     
+        return lines1, lines2  
+       
     def draw_ray(
         self,
         x: float, 
