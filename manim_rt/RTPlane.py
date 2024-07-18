@@ -14,6 +14,8 @@ class RTPlane(Square):
         y_rotation: float = 0,
         z_rotation: float = 0,
         refractive_index: float = 1,
+        color=WHITE,
+        opacity=1,
         **kwargs
     ):
         # get 3x3 scale matrix
@@ -65,6 +67,9 @@ class RTPlane(Square):
             shade_in_3d=True,
             **kwargs
         )
+        
+        self.set_color(color)
+        self.set_opacity(opacity)
         
         self.stretch(x_scale, 0)
         self.stretch(y_scale, 1)
