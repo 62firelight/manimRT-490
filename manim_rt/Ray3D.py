@@ -194,6 +194,7 @@ class Ray3D(Arrow3D):
         self,
         hit_point_index: int,
         camera: Mobject,
+        distance: float = 1,
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
     ) -> Ray3D:
@@ -207,7 +208,7 @@ class Ray3D(Arrow3D):
         
         unit_reflected_vector = self.get_reflected_vector(hit_point_index, camera)
         
-        mirror_ray = Ray3D(hit_point, unit_reflected_vector, thickness=thickness, color=color)
+        mirror_ray = Ray3D(hit_point, unit_reflected_vector, distance=distance, thickness=thickness, color=color)
 
         return mirror_ray
     
