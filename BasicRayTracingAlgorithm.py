@@ -32,7 +32,7 @@ class BasicRayTracingAlgorithm(ThreeDScene):
         pixel = camera.colour_pixel(2, 2, RED).rotate(90 * DEGREES, RIGHT).rotate(35 * DEGREES, OUT)
         
         # Scene
-        plane = RTPlane(x_scale=1.5, y_scale=4)
+        plane = RTPlane(x_scale=3, y_scale=8)
         transparent_sphere = RTSphere(translation=[0, 0, 1], opacity=0.5)
         red_sphere = RTSphere(translation=red_sphere_location, color=RED)
         light_source = RTPointLightSource([0, -0.5, 3]).scale(0.25)
@@ -40,17 +40,17 @@ class BasicRayTracingAlgorithm(ThreeDScene):
         sphere = RTSphere.generate_sphere(ray, 2.5, color=RED)
         
         # Image
-        self.add(axes)
-        self.add(labels)
+        # self.add(axes)
+        # self.add(labels)
         self.add(camera)
         # self.add(partial_ray)
         self.add(ray)
         self.add(pixel)
-        self.add(sphere)
-        # self.add(plane)
-        # self.add(transparent_sphere)
-        # self.add(red_sphere)
-        # self.add(light_source)
+        # self.add(sphere)
+        self.add(plane)
+        self.add(transparent_sphere)
+        self.add(red_sphere)
+        self.add(light_source)
         # self.add(ray1)
         # self.add(ray2)
         # self.add(ray3)

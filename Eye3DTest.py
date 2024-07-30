@@ -7,7 +7,6 @@ from manim_rt.Ray3D import Ray3D
 class Eye3DTest(ThreeDScene):
     def construct(self):
         self.set_camera_orientation(phi=45 * DEGREES, theta=-90 * DEGREES)
-        # self.camera.background_color = DARKER_GREY
         
         axes = ThreeDAxes()
         labels = axes.get_axis_labels()

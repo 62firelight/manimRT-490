@@ -2,7 +2,20 @@ from manim import *
 
 class PhongIlluminationModel(Scene):
     def construct(self):
-        phong = MathTex(r"I(\vec{p})=I_ak_a + I_dk_d(\hat{n} \cdot \hat{l}) + I_sk_s(\hat{r} \cdot \hat{v})^a")
+        phong = MathTex("I(\\boldsymbol{p})=I_ak_a + I_dk_d(",
+                        "\\boldsymbol{\hat{n}}",
+                        "\cdot", 
+                        "\\boldsymbol{\hat{l}}", 
+                        ") + I_sk_s(", 
+                        "\\boldsymbol{\hat{r}}", 
+                        "\cdot", 
+                        "\\boldsymbol{\hat{v}}", 
+                        ")^a")
+        
+        phong.set_color_by_tex("\\boldsymbol{\hat{n}}", BLUE)
+        phong.set_color_by_tex("\\boldsymbol{\hat{l}}", YELLOW)
+        phong.set_color_by_tex("\\boldsymbol{\hat{r}}", ORANGE)
+        phong.set_color_by_tex("\\boldsymbol{\hat{v}}", GREEN)
         
         phong_multiple_lights = MathTex(r"I(\vec{p})=I_ak_a + \sum\limits_i(I_{d, i}k_d(\hat{n} \cdot \hat{l_i}) + I_{s, i}k_s(\hat{r_i} \cdot \hat{v})^a)")
         
@@ -28,7 +41,9 @@ class PhongIlluminationModel(Scene):
         \end{pmatrix}
         """)
         
-        models = VGroup(phong, phong_multiple_lights, phong_multiple_lights_colours).arrange(DOWN)
+        # models = VGroup(phong, phong_multiple_lights, phong_multiple_lights_colours).arrange(DOWN)
         
-        self.add(models)
+        # self.add(models)
         # self.play(Write(models))
+        
+        self.add(phong)

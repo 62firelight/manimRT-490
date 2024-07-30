@@ -8,7 +8,26 @@ from manim_rt.RTCamera import RTCamera
 
 class RTPointLightSourceTest(ThreeDScene):
     def construct(self):
-        self.set_camera_orientation(phi=90 * DEGREES, theta=-90 * DEGREES, frame_center=[0, 0, 1], zoom=1.5)
+        self.set_camera_orientation(phi=90 * DEGREES, theta=-90 * DEGREES, frame_center=[0, 0, 0.65], zoom=5)
+        
+        phong = MathTex("I(\\boldsymbol{p})=I_ak_a + I_dk_d(",
+                        "\\boldsymbol{\hat{n}}",
+                        "\cdot", 
+                        "\\boldsymbol{\hat{l}}", 
+                        ") + I_sk_s(", 
+                        "\\boldsymbol{\hat{r}}", 
+                        "\cdot", 
+                        "\\boldsymbol{\hat{v}}", 
+                        ")^a")
+        
+        phong.set_color_by_tex("\\boldsymbol{\hat{n}}", BLUE)
+        phong.set_color_by_tex("\\boldsymbol{\hat{l}}", YELLOW)
+        phong.set_color_by_tex("\\boldsymbol{\hat{r}}", ORANGE)
+        phong.set_color_by_tex("\\boldsymbol{\hat{v}}", GREEN)
+        
+        phong.scale(1.45)
+        
+        phong.move_to([0.125, 0, 1.25])
         
         # Axes and X + Z labels
         axes = ThreeDAxes(x_length=8)
@@ -20,7 +39,7 @@ class RTPointLightSourceTest(ThreeDScene):
         camera.rotate(-45 * DEGREES, UP, camera.projection_point_coords)
         
         # Ray
-        ray = Ray3D(start=[-3, 0, 3], direction=[1, 0, -1], distance=4.5, color=RED)
+        ray = Ray3D(start=[-3, 0, 3], direction=[1, 0, -1], distance=4.5, thickness=0.01, color=RED)
         ray_text = MathTex("R=(-3, 0, 3) + \\lambda (1, 0, -1)").next_to(ray.get_start(), OUT, buff=0.375).shift(0.5 * RIGHT)
         
         # Sphere
@@ -35,7 +54,7 @@ class RTPointLightSourceTest(ThreeDScene):
         
         # First hit point
         first_hit_point = hit_points[0]
-        first_hit_point_dot = Dot3D(first_hit_point, color=PURPLE)
+        first_hit_point_dot = Dot3D(first_hit_point, color=LIGHT_PINK)
         
         # Second hit point
         second_hit_point = hit_points[1]
@@ -43,19 +62,19 @@ class RTPointLightSourceTest(ThreeDScene):
         
         # Unit normal
         unit_normal = Ray3D(first_hit_point, ray.get_unit_normal(0), color=BLUE)
-        unit_normal_text = MathTex("\\hat{n}").next_to(unit_normal.get_end(), RIGHT + OUT, buff=0.1)
+        unit_normal_text = MathTex("\\boldsymbol{\\hat{n}}", color=BLUE).scale(2).next_to(unit_normal.get_end(), RIGHT, buff=-0.1)
         
         # Light vector
         light_vector = Ray3D(first_hit_point, ray.get_light_vector(0, light), color=YELLOW)
-        light_vector_text = MathTex("\\hat{l}").next_to(light_vector.get_end(), 0.1 * RIGHT + OUT, buff=0.45)
+        light_vector_text = MathTex("\\boldsymbol{\\hat{l}}", color=YELLOW).scale(2).next_to(light_vector.get_end(), RIGHT, buff=0.1)
         
         # Reflected light vector
         reflected_light_vector = Ray3D(first_hit_point, ray.get_reflected_light_vector(0, light), color=ORANGE)
-        reflected_light_vector_text = MathTex("\\hat{r}").next_to(reflected_light_vector.get_end(), RIGHT + OUT, buff=0.1)
+        reflected_light_vector_text = MathTex("\\boldsymbol{\\hat{r}}", color=ORANGE).scale(2).next_to(reflected_light_vector.get_end(), RIGHT + OUT, buff=0.01)
         
         # Viewer vector (points towards the viewer of scene)
         viewer_vector = Ray3D(first_hit_point, ray.get_viewer_vector(0, camera), color=GREEN)
-        viewer_vector_text = MathTex("\\hat{v}").next_to(viewer_vector.get_end(), IN)
+        viewer_vector_text = MathTex("\\boldsymbol{\\hat{v}}", color=GREEN).scale(2).next_to(viewer_vector.get_end(), IN)
         
         # Shadow ray
         shadow_ray = ray.get_shadow_ray(0, light, color=LIGHT_BROWN)
@@ -72,6 +91,23 @@ class RTPointLightSourceTest(ThreeDScene):
         angle_between_normal_and_light = Arc3D(unit_normal, light_vector)
         angle_between_reflected_and_viewer = Arc3D(reflected_light_vector, viewer_vector)
         
-        # Add all relevants objects and text to the image
-        self.add(axes, sphere, light, camera, ray, first_hit_point_dot, second_hit_point_dot, unit_normal, light_vector, reflected_light_vector, viewer_vector, shadow_ray, reflected_ray, angle_between_normal_and_light, angle_between_reflected_and_viewer)
-        self.add_fixed_orientation_mobjects(x_label, z_label, ray_text, unit_normal_text, light_vector_text, reflected_light_vector_text, viewer_vector_text, shadow_ray_text, reflected_ray_text)
+        # Add all relevant objects and text to the image
+        self.add(sphere)
+        # self.add(light)
+        # self.add(camera)
+        self.add(ray)
+        self.add(first_hit_point_dot)
+        # self.add(second_hit_point_dot) 
+        # self.add(unit_normal) 
+        # self.add(light_vector) 
+        # self.add(reflected_light_vector)
+        # self.add(viewer_vector)
+        
+        self.add_fixed_orientation_mobjects(x_label)
+        self.add_fixed_orientation_mobjects(z_label)
+        self.add_fixed_orientation_mobjects(ray_text)
+        # self.add_fixed_orientation_mobjects(phong)
+        # self.add_fixed_orientation_mobjects(unit_normal_text)
+        # self.add_fixed_orientation_mobjects(light_vector_text)
+        # self.add_fixed_orientation_mobjects(reflected_light_vector_text)
+        # self.add_fixed_orientation_mobjects(viewer_vector_text)
