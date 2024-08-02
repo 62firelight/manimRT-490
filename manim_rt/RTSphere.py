@@ -6,7 +6,33 @@ from typing import Sequence
 from manim_rt.Ray3D import Ray3D
 from manim_rt.Utility import solve_quadratic
 
+
 class RTSphere(Sphere):
+    """A sphere with transformations that are applied and tracked.
+    
+    Parameters
+    ----------
+    translation
+        The translation transformation to apply to the sphere.
+    x_scale
+        The scale of the sphere along the X axis.
+    y_scale
+        The scale of the sphere along the Y axis.
+    z_Scale
+        The scale of the sphere along the Z axis.
+    x_rotation
+        The rotation of the sphere along the X axis.
+    y_rotation
+        The rotation of the sphere along the Y axis.
+    z_rotation
+        The rotation of the sphere along the Z axis.
+    refractive_index
+        The refractive index of the sphere.
+    color
+        The color of the sphere.
+    opacity
+        The opacity of the sphere.
+    """
     def __init__(
         self,
         translation: Sequence[float] = [0, 0, 0],
@@ -87,7 +113,19 @@ class RTSphere(Sphere):
     def get_intersection(
         self,
         ray: Ray3D
-    ):      
+    ):
+        """Calculates the intersection point(s) between this sphere and a given ray.
+        
+        Parameters
+        ----------
+        ray
+            A Ray3D Mobject to calculate intersection point(s) with.
+            
+        Returns
+        -------
+        An array containing the intersection point(s) with the given ray. 
+        The array is empty if there are no intersection points.
+        """
         # apply inverse transformation to the ray
         start_inverse = np.matmul(self.inverse, ray.homogeneous_start)
         direction_inverse = np.matmul(self.inverse, ray.homogeneous_direction)
@@ -137,6 +175,36 @@ class RTSphere(Sphere):
         color: ParsableManimColor = WHITE,
         opacity: float = 1,
     ):
+        """Generates a sphere along a given ray. 
+        Useful for guaranteeing an intersection point with a ray.
+        
+        Parameters
+        ----------
+        ray
+            A Ray3D Mobject to use for generating a sphere.
+        distance_along_ray
+            The distance along the ray at which a sphere will be generated.
+        translation
+            The translation transformation to apply to the sphere.
+        x_scale
+            The scale of the sphere along the X axis.
+        y_scale
+            The scale of the sphere along the Y axis.
+        z_Scale
+            The scale of the sphere along the Z axis.
+        x_rotation
+            The rotation of the sphere along the X axis.
+        y_rotation
+            The rotation of the sphere along the Y axis.
+        z_rotation
+            The rotation of the sphere along the Z axis.
+        refractive_index
+            The refractive index of the sphere.
+        color
+            The color of the sphere.
+        opacity
+            The opacity of the sphere.
+        """
         sphere_center = ray.start + distance_along_ray * np.array(ray.direction)
         
         sphere = RTSphere(sphere_center, x_scale, y_scale, z_scale, x_rotation, y_rotation, z_rotation, refractive_index, color)

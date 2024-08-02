@@ -6,7 +6,23 @@ import numpy as np
 
 from manim_rt.RTPointLightSource import RTPointLightSource
 
+
 class Ray3D(Arrow3D):
+    """A 3D arrow representing a ray.
+    
+    Parameters
+    ----------
+    start
+        The originating position of the ray.
+    direction
+        The direction of the ray.
+    distance
+        The length of the ray.
+    thickness
+        The thickness of the ray.
+    color
+        The color of the ray.
+    """
     def __init__(
         self,
         start: np.ndarray = LEFT,
@@ -38,6 +54,20 @@ class Ray3D(Arrow3D):
         homogenous_coordinates=False, 
         decimal_places=1
     ) -> str:
+        """Write a LaTeX equation for this ray.
+        
+        Parameter
+        ---------
+        homogeneous_coordinates
+            Determine if homogeneous coordinates should be used when displaying
+            the equation.
+        decimal_places
+            How many decimal places to round to when displaying the equation.
+            
+        Returns
+        -------
+        A string formatted as LaTeX representing the ray's equation.
+        """
         if not homogenous_coordinates:
             start = self.start
             direction = self.direction
@@ -65,6 +95,19 @@ class Ray3D(Arrow3D):
         self,
         hit_point_index: int
     ) -> Ray3D:
+        """Gets the unit normal at a specific hit point along the ray.
+        
+        Parameters
+        ----------
+        hit_point_index
+            The index number of the hit point. For example, 0 would be the
+            first hit point along the ray.
+            
+        Returns
+        -------
+        A Ray3D Mobject representing the unit normal at the given hit point
+        along the ray.
+        """
         if len(self.hit_points) <= 0:
             raise Exception("No intersections were calculated for this ray")
         
@@ -80,13 +123,43 @@ class Ray3D(Arrow3D):
         origin: np.ndarray | tuple[float],
         point: np.ndarray | tuple[float]
     ):
+        """Internal method for calculating unit vectors that point towards a 
+        given point.
+        
+        Parameters
+        ----------
+        origin
+            The starting position of the unit vector.
+        point
+            The location where the unit vector should point towards.
+            
+        Returns
+        -------
+        An array representing the unit vector that points towards a given
+        point.
+        """
         return normalize(point - origin)
     
     def get_light_vector(
         self,
         hit_point_index: int,
         light_source: RTPointLightSource
-    ) -> Ray3D:
+    ) -> list:
+        """Calculates the "light vector," a unit vector that starts from a 
+        given hit point and points towards a light source within the scene.
+        
+        Parameters
+        ----------
+        hit_point_index
+            The index number of the hit point. For example, 0 would be the
+            first hit point along the ray.
+        light_source
+            The light source mobject that the unit vector will point towards.
+            
+        Returns
+        -------
+        An array representing the light vector.
+        """
         if len(self.hit_points) <= 0:
             raise Exception("No intersections were calculated for this ray")
         
@@ -104,6 +177,21 @@ class Ray3D(Arrow3D):
         hit_point_index: int,
         light_source: RTPointLightSource
     ) -> list:
+        """Calculates the "reflected light vector," which is a light vector
+        that reflects through the normal at a given hit point.
+        
+        Parameters
+        ----------
+        hit_point_index
+            The index number of the hit point. For example, 0 would be the
+            first hit point along the ray.
+        light_source
+            The light source mobject that the light vector will point towards.
+            
+        Returns
+        -------
+        An array representing the reflected light vector.
+        """
         if len(self.hit_points) <= 0:
             raise Exception("No intersections were calculated for this ray")
         
@@ -128,6 +216,22 @@ class Ray3D(Arrow3D):
         hit_point_index: int,
         camera: Mobject
     ) -> list:
+        """Calculates the "viewer vector," a unit vector that starts from a
+        given hit point and points towards the observer of a scene (i.e. a
+        virtual camera)
+        
+        Parameters
+        ----------
+        hit_point_index
+            The index number of the hit point. For example, 0 would be the
+            first hit point along the ray.
+        camera
+            The virtual camera that the viewer vector will point towards.
+            
+        Returns
+        -------
+        An array representing the viewer vector.        
+        """
         if len(self.hit_points) <= 0:
             raise Exception("No intersections were calculated for this ray")
         
@@ -147,6 +251,25 @@ class Ray3D(Arrow3D):
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
     ) -> Ray3D:
+        """Create a "shadow ray," a ray that starts from a given hit point and
+        points towards a light source.
+        
+        Parameters
+        ----------
+        hit_point_index
+            The index number of the hit point. For example, 0 would be the
+            first hit point along the ray.
+        light_source
+            The light source Mobject that the shadow ray will point towards.
+        thickness
+            The thickness of the shadow ray.
+        color
+            The color of the shadow ray.
+            
+        Returns
+        -------
+        A Ray3D Mobject representing a shadow ray.
+        """
         if len(self.hit_points) <= 0:
             raise Exception("No intersections were calculated for this ray")
         
@@ -173,6 +296,28 @@ class Ray3D(Arrow3D):
         hit_point_index: int,
         camera: Mobject
     ) -> list:
+        """Calculates the "reflected vector," which is the viewer vector
+        reflected through the normal. 
+        
+        Not to be confused with the reflected light vector, which is the
+        light vector reflected through the normal. 
+        
+        The reflected vector is used for simulating reflected surfaces in a 
+        ray tracer, while the reflected light vector may be used for the 
+        Phong illumination model.
+        
+        Parameters
+        ----------
+        hit_point_index
+            The index number of the hit point. For example, 0 would be the
+            first hit point along the ray.
+        camera
+            The camera mobject that the viewer vector starts from. 
+            
+        Returns
+        -------
+        An array representing the reflected vector.
+        """
         if len(self.hit_points) <= 0:
             raise Exception("No intersections were calculated for this ray")
         
@@ -198,6 +343,27 @@ class Ray3D(Arrow3D):
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
     ) -> Ray3D:
+        """Calculates a mobject version of the "reflected ray," which is the
+        viewer vector reflected through the normal.
+        
+        Parameters
+        ----------
+        hit_point_index
+            The index number of the hit point. For example, 0 would be the
+            first hit point along the ray.
+        camera
+            The camera mobject that the viewer vector starts from. 
+        distance
+            The length of the reflected ray.
+        thickness
+            The thickness of the reflected ray.
+        color
+            The color of the reflected ray.
+            
+        Returns
+        -------
+        A Ray3D Mobject representing the reflected vector.
+        """
         if len(self.hit_points) <= 0:
             raise Exception("No intersections were calculated for this ray")
         
@@ -220,6 +386,26 @@ class Ray3D(Arrow3D):
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
     ) -> Ray3D:
+        """Calculates a "refracted ray," a ray that bends when it 
+        passes over to another medium (e.g. air to water).
+        
+        Parameters
+        ----------
+        object
+            The boundary between medium 1 and medium 2.
+        distance
+            The length of the refracted ray.
+        refractive_index
+            The refractive index of medium 1.
+        thickness
+            The thickness of the refracted ray.
+        color
+            The color of the refracted ray.
+            
+        Returns
+        -------
+        A Ray3D Mobject representing the refracted ray.
+        """
         if len(self.hit_points) <= 0 and callable(getattr(object, "get_intersection")):
             self.hit_points = object.get_intersection(self)
         

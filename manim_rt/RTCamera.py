@@ -1,5 +1,5 @@
 import numbers
-from typing import Sequence
+from typing import Any, Sequence
 from manim import *
 
 import numpy as np
@@ -9,6 +9,23 @@ from manim_rt.Utility import clamp
 
 
 class RTCamera(Axes):
+    """A virtual camera that represents the observer of a scene.
+    
+    Parameters
+    ----------
+    projection_point_coords
+        The 3D coordinates of the projection point.
+    image_width
+        The grid width of the camera's 2D image plane.
+    image_height
+        The grid height of the camera's 2D image plane.
+    total_width
+        The width of the camera's 2D image plane.
+    total_height
+        The height of the camera's 2D image plane.
+    focal_length
+        The distance from the projection point to the image plane.
+    """
     def __init__(
         self,
         projection_point_coords: list = ORIGIN,
@@ -17,10 +34,6 @@ class RTCamera(Axes):
         total_width: int = 1,
         total_height: int = 1,
         focal_length: int = 1,
-        background_line_style: dict[str, Any] | None = None,
-        faded_line_style: dict[str, Any] | None = None,
-        faded_line_ratio: int = 1,
-        make_smooth_after_applying_functions: bool = True,
         **kwargs: dict[str, Any],
     ):
         self.projection_point_coords = projection_point_coords
@@ -51,6 +64,12 @@ class RTCamera(Axes):
             "stroke_width": 2,
             "stroke_opacity": 1,
         }
+        
+        # Default NumberPlane parameters
+        background_line_style: dict[str, Any] | None = None
+        faded_line_style: dict[str, Any] | None = None
+        faded_line_ratio: int = 1
+        make_smooth_after_applying_functions: bool = True
 
         self._update_default_configs(
             (self.axis_config, self.y_axis_config, self.background_line_style),
@@ -106,7 +125,8 @@ class RTCamera(Axes):
         )
         
     def _init_background_lines(self) -> None:
-        """Will init all the lines of NumberPlanes (faded or not)"""
+        """A method ported over from NumberPlane. Will init all the lines of 
+        NumberPlanes (faded or not)"""
         if self.faded_line_style is None:
             style = dict(self.background_line_style)
             # For anything numerical, like stroke_width
@@ -130,7 +150,7 @@ class RTCamera(Axes):
         )
         
     def _get_lines(self) -> tuple[VGroup, VGroup]:
-        """Generate all the lines, faded and not faded.
+        """A method ported over from NumberPlane. Generate all the lines, faded and not faded.
          Two sets of lines are generated: one parallel to the X-axis, and parallel to the Y-axis.
 
         Returns
@@ -171,7 +191,7 @@ class RTCamera(Axes):
         freq: float,
         ratio_faded_lines: int,
     ) -> tuple[VGroup, VGroup]:
-        """Generate a set of lines parallel to an axis.
+        """A method ported over from NumberPlane. Generate a set of lines parallel to an axis.
 
         Parameters
         ----------
@@ -238,6 +258,25 @@ class RTCamera(Axes):
         thickness: float = 0.02, 
         color: ParsableManimColor = BLUE
     ):
+        """Creates a ray that goes through the centre of the pixel specified by (x, y).
+        
+        Parameters
+        ----------
+        x
+            The x coordinate of the pixel that the ray goes through.
+        y
+            The y coordinate of the pixel that the ray goes through.
+        distance
+            The length of the ray.
+        thickness
+            The thickness of the ray.
+        color
+            The color of the ray.
+            
+        Returns
+        -------
+        A Ray3D Mobject that goes through the centre of the pixel specified by (x, y).
+        """
         if distance is None:
             distance = self.focal_length * 2
         
@@ -263,6 +302,21 @@ class RTCamera(Axes):
         y: float,  
         color: ParsableManimColor = BLUE
     ):
+        """Creates a colored Square Mobject at the pixel specified by (x, y).
+        
+        Parameters
+        ----------
+        x
+            The x coordinate of the pixel.
+        y 
+            The y coordinate of the pixel.
+        color
+            The color of the Square Mobject at the specified pixel.
+            
+        Returns
+        -------
+        A Square Mobject at the pixel specified by (x, y).
+        """
         pixel_x_coord = round(x)
         pixel_y_coord = round(y)
         
