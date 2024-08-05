@@ -9,7 +9,7 @@ class PresentationExample(ThreeDScene):
         
         sphere = RTSphere(color=GREEN)
         
-        ray = Ray3D([-5, 0, 0], distance=10, color=RED)
+        ray = Ray3D([-5, 0, 0], length=10, color=RED)
         
         self.begin_ambient_camera_rotation(0)
         

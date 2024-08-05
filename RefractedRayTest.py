@@ -35,7 +35,7 @@ class RefractedRayTest(ThreeDScene):
         unit_normal_n2 = Ray3D(hit_points[0], [0, 0, -1], color=ORANGE)
         
         # Our first refracted ray travelling from air into water
-        first_refracted_ray = ray.get_refracted_ray(water_plane, color=BLUE, distance=1.5)
+        first_refracted_ray = ray.get_refracted_ray(water_plane, color=BLUE, length=1.5)
         
         # Angle between unit normal for n2 and the first refracted ray
         angle_n2 = Arc3D(unit_normal_n2, first_refracted_ray)
@@ -50,7 +50,7 @@ class RefractedRayTest(ThreeDScene):
         
         # Our second refracted ray travelling from water to air
         # The direction of this ray should be the same as the previous incident ray
-        second_refracted_ray = first_refracted_ray.get_refracted_ray(air_plane, refractive_index=1.33, distance=2, color=RED)
+        second_refracted_ray = first_refracted_ray.get_refracted_ray(air_plane, refractive_index=1.33, length=2, color=RED)
         
         # Show last refractive index 
         n3_text = MathTex("n = 1").next_to(second_refracted_ray.get_center(), IN, buff=0.5)

@@ -20,7 +20,7 @@ class ShadowRays(ThreeDScene):
         camera.rotate(-45 * DEGREES, UP, camera.projection_point_coords)
         
         # Ray
-        ray = Ray3D(start=[-3, 0, 3], direction=[1, 0, -1], distance=4.5, thickness=0.01, color=RED)
+        ray = Ray3D(start=[-3, 0, 3], direction=[1, 0, -1], length=4.5, thickness=0.01, color=RED)
         ray_text = MathTex("R=(-3, 0, 3) + \\lambda (1, 0, -1)").next_to(ray.get_start(), OUT, buff=0.375).shift(0.5 * RIGHT)
         
         # Sphere

@@ -16,7 +16,7 @@ class Ray3D(Arrow3D):
         The originating position of the ray.
     direction
         The direction of the ray.
-    distance
+    length
         The length of the ray.
     thickness
         The thickness of the ray.
@@ -27,7 +27,7 @@ class Ray3D(Arrow3D):
         self,
         start: np.ndarray = LEFT,
         direction: np.ndarray = RIGHT,
-        distance: float = 1,
+        length: float = 1,
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE,
         **kwargs,
@@ -35,13 +35,13 @@ class Ray3D(Arrow3D):
         self.direction = direction
         self.normalized_direction = normalize(direction)
         
-        end = start + distance * np.array(direction)
+        end = start + length * np.array(direction)
         
         super().__init__(
             start=start, end=end, thickness=thickness, color=color, **kwargs
         )
         
-        self.distance = distance
+        self.length = length
         
         self.homogeneous_start = np.append(start, 1)
         self.homogeneous_direction = np.append(direction, 0)
@@ -339,7 +339,7 @@ class Ray3D(Arrow3D):
         self,
         hit_point_index: int,
         camera: Mobject,
-        distance: float = 1,
+        length: float = 1,
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
     ) -> Ray3D:
@@ -353,7 +353,7 @@ class Ray3D(Arrow3D):
             first hit point along the ray.
         camera
             The camera mobject that the viewer vector starts from. 
-        distance
+        length
             The length of the reflected ray.
         thickness
             The thickness of the reflected ray.
@@ -374,14 +374,14 @@ class Ray3D(Arrow3D):
         
         unit_reflected_vector = self.get_reflected_vector(hit_point_index, camera)
         
-        mirror_ray = Ray3D(hit_point, unit_reflected_vector, distance=distance, thickness=thickness, color=color)
+        mirror_ray = Ray3D(hit_point, unit_reflected_vector, length=length, thickness=thickness, color=color)
 
         return mirror_ray
     
     def get_refracted_ray(
         self,
         object: Mobject,
-        distance: float = 1,
+        length: float = 1,
         refractive_index: float = 1,
         thickness: float = 0.02,
         color: ParsableManimColor = WHITE
@@ -393,7 +393,7 @@ class Ray3D(Arrow3D):
         ----------
         object
             The boundary between medium 1 and medium 2.
-        distance
+        length
             The length of the refracted ray.
         refractive_index
             The refractive index of medium 1.
@@ -445,7 +445,7 @@ class Ray3D(Arrow3D):
             
         #     transmitted_ray =  transmitted_parallel + transmitted_perpendicular
         
-        transmitted_ray_obj = Ray3D(self.hit_points[0], transmitted_ray, distance=distance, thickness=thickness, color=color)
+        transmitted_ray_obj = Ray3D(self.hit_points[0], transmitted_ray, length=length, thickness=thickness, color=color)
         
         return transmitted_ray_obj
         

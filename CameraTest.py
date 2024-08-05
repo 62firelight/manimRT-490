@@ -8,7 +8,7 @@ class CameraTest(ThreeDScene):
     def construct(self):
         self.set_camera_orientation(phi=-45*DEGREES, frame_center=[0, 0, 0.25], zoom=5.5)
         camera = RTCamera([0, 0, 1], focal_length=1)
-        red_ray = camera.draw_ray(8, 5, color=RED, distance=1.75, thickness=0.005)
+        red_ray = camera.draw_ray(8, 5, color=RED, length=1.75, thickness=0.005)
         self.add(camera, red_ray)
         # self.set_camera_orientation(phi=65*DEGREES, theta=-95*DEGREES, zoom=8)
         # axes = ThreeDAxes()
@@ -16,7 +16,7 @@ class CameraTest(ThreeDScene):
         
         # camera = RTCamera([0, 0, 1])
         
-        # red_ray = camera.draw_ray(8, 5, color=RED, distance=1.5, thickness=0.01)
+        # red_ray = camera.draw_ray(8, 5, color=RED, length=1.5, thickness=0.01)
         # green_pixel = camera.colour_pixel(8, 5, color=GREEN)
         
         # self.add(camera, red_ray, green_pixel)

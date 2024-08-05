@@ -45,7 +45,7 @@ class TotalInternalRefractionTest(ThreeDScene):
             intersecting_plane.get_intersection(ray)
             
             # First (of many) refracted rays that get reflected instead due to Total Internal Reflection
-            refracted_ray = ray.get_refracted_ray(bottom_air_plane, color=ray_color, distance=1.125, refractive_index=1.33)
+            refracted_ray = ray.get_refracted_ray(bottom_air_plane, color=ray_color, length=1.125, refractive_index=1.33)
             
             self.add(refracted_ray)
             

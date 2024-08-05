@@ -19,7 +19,7 @@ class ReflectionRay(ThreeDScene):
         camera.rotate(-45 * DEGREES, UP, camera.projection_point_coords)
         
         # Ray
-        ray = Ray3D(start=[-3, 0, 3], direction=[1, 0, -1], distance=5.5, thickness=0.01, color=RED)
+        ray = Ray3D(start=[-3, 0, 3], direction=[1, 0, -1], length=5.5, thickness=0.01, color=RED)
         ray_text = MathTex("R=(-3, 0, 3) + \\lambda (1, 0, -1)").next_to(ray.get_start(), OUT, buff=0.375).shift(0.5 * RIGHT)
         
         # Sphere
@@ -35,11 +35,11 @@ class ReflectionRay(ThreeDScene):
         first_hit_point_text = Tex("Hit Point").next_to(first_hit_point, direction=LEFT, buff=0.5).shift([0.25, 0, -0.55])
         
         # Unit normal
-        normal = Ray3D(first_hit_point, ray.get_unit_normal(0), distance=4, color=GREEN)
+        normal = Ray3D(first_hit_point, ray.get_unit_normal(0), length=4, color=GREEN)
         normal_text = Tex("Normal").next_to(normal.get_center(), buff=0.2).shift([0.1, 0, 1])
         
         # Mirror ray
-        mirror_ray = ray.get_reflected_ray(0, camera, distance=6, color=LIGHT_GREY)
+        mirror_ray = ray.get_reflected_ray(0, camera, length=6, color=LIGHT_GREY)
         
         # This sphere will intersect with the shadow ray above
         blocking_sphere = RTSphere([4, 0, 2], x_scale=0.5, y_scale=0.5, z_scale=0.5)

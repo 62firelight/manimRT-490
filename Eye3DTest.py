@@ -16,10 +16,10 @@ class Eye3DTest(ThreeDScene):
         light = RTPointLightSource([4, 0, 1])
     
         ray1 = Line3D([4, 0, 1], [0, 0, -3], color=YELLOW)
-        ray2 = Ray3D([0, 0, -3], [-1, 0, 1], distance=3.5, color=YELLOW)
+        ray2 = Ray3D([0, 0, -3], [-1, 0, 1], length=3.5, color=YELLOW)
         
         miss1 = Line3D([3.5, 0.25, 1], [0, 0.25, -3], color=YELLOW)
-        miss2 = Ray3D([0, 0.25, -3], [-1, 0, 1.5], distance=3.5, color=YELLOW)
+        miss2 = Ray3D([0, 0.25, -3], [-1, 0, 1.5], length=3.5, color=YELLOW)
         
         plane = RTPlane([0, 0, -3], x_scale=5, y_scale=1.5, color=BLUE, opacity=0.75)
         

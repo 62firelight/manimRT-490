@@ -254,7 +254,7 @@ class RTCamera(Axes):
         self,
         x: float, 
         y: float, 
-        distance: float = 1, 
+        length: float = 1, 
         thickness: float = 0.02, 
         color: ParsableManimColor = BLUE
     ):
@@ -266,7 +266,7 @@ class RTCamera(Axes):
             The x coordinate of the pixel that the ray goes through.
         y
             The y coordinate of the pixel that the ray goes through.
-        distance
+        length
             The length of the ray.
         thickness
             The thickness of the ray.
@@ -277,8 +277,8 @@ class RTCamera(Axes):
         -------
         A Ray3D Mobject that goes through the centre of the pixel specified by (x, y).
         """
-        if distance is None:
-            distance = self.focal_length * 2
+        if length is None:
+            length = self.focal_length * 2
         
         pixel_x_coord = round(x)
         pixel_y_coord = round(y)
@@ -290,9 +290,9 @@ class RTCamera(Axes):
         
         ray_direction = pixel_coords - self.projection_point.get_center()
         
-        ray = Ray3D(self.projection_point.get_center(), ray_direction, distance=distance, thickness=thickness, color=color)
+        ray = Ray3D(self.projection_point.get_center(), ray_direction, length=length, thickness=thickness, color=color)
         
-        # 1 unit of this ray's distance is equivalent to the camera's focal length
+        # 1 unit of this ray's length is equivalent to the camera's focal length
         
         return ray
     
