@@ -51,12 +51,12 @@ class Ray3D(Arrow3D):
         
     def get_equation(
         self, 
-        homogenous_coordinates=False, 
+        homogeneous_coordinates=False, 
         decimal_places=1
     ) -> str:
         """Write a LaTeX equation for this ray.
         
-        Parameter
+        Parameters
         ---------
         homogeneous_coordinates
             Determine if homogeneous coordinates should be used when displaying
@@ -68,7 +68,7 @@ class Ray3D(Arrow3D):
         -------
         A string formatted as LaTeX representing the ray's equation.
         """
-        if not homogenous_coordinates:
+        if not homogeneous_coordinates:
             start = self.start
             direction = self.direction
         else:
