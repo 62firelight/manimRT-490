@@ -8,7 +8,7 @@ from manim_rt.RTCamera import RTCamera
 
 class RTPointLightSourceTest(ThreeDScene):
     def construct(self):
-        self.set_camera_orientation(phi=90 * DEGREES, theta=-90 * DEGREES, frame_center=[0, 0, 0.65], zoom=5)
+        self.set_camera_orientation(phi=90 * DEGREES, theta=-95 * DEGREES, frame_center=[0, 0, 0.65], zoom=5)
         
         phong = MathTex("I(\\boldsymbol{p})=I_ak_a + I_dk_d(",
                         "\\boldsymbol{\hat{n}}",
@@ -47,7 +47,7 @@ class RTPointLightSourceTest(ThreeDScene):
         sphere.set_color(BLUE)
         
         # Light Source
-        light = RTPointLightSource(center=[3, 0, 4], color=YELLOW)
+        light = RTPointLightSource(center=[3, 0, 4], radius=0.1, color=YELLOW)
         
         # Calculate hit points 
         hit_points = sphere.get_intersection(ray)
@@ -92,22 +92,59 @@ class RTPointLightSourceTest(ThreeDScene):
         angle_between_reflected_and_viewer = Arc3D(reflected_light_vector, viewer_vector)
         
         # Add all relevant objects and text to the image
-        self.add(sphere)
+        # self.add(sphere)
         # self.add(light)
         # self.add(camera)
-        self.add(ray)
-        self.add(first_hit_point_dot)
+        # self.add(ray)
+        # self.add(first_hit_point_dot)
         # self.add(second_hit_point_dot) 
         # self.add(unit_normal) 
         # self.add(light_vector) 
         # self.add(reflected_light_vector)
         # self.add(viewer_vector)
+        # self.add(angle_between_normal_and_light)
+        # self.add(angle_between_reflected_and_viewer)
         
-        self.add_fixed_orientation_mobjects(x_label)
-        self.add_fixed_orientation_mobjects(z_label)
-        self.add_fixed_orientation_mobjects(ray_text)
-        # self.add_fixed_orientation_mobjects(phong)
-        # self.add_fixed_orientation_mobjects(unit_normal_text)
-        # self.add_fixed_orientation_mobjects(light_vector_text)
-        # self.add_fixed_orientation_mobjects(reflected_light_vector_text)
-        # self.add_fixed_orientation_mobjects(viewer_vector_text)
+        # self.add_fixed_orientation_mobjects(x_label)
+        # self.add_fixed_orientation_mobjects(z_label)
+        # self.add_fixed_orientation_mobjects(ray_text)
+        self.add_fixed_orientation_mobjects(phong)
+        self.add_fixed_orientation_mobjects(unit_normal_text)
+        self.add_fixed_orientation_mobjects(light_vector_text)
+        self.add_fixed_orientation_mobjects(reflected_light_vector_text)
+        self.add_fixed_orientation_mobjects(viewer_vector_text)
+        
+        self.begin_ambient_camera_rotation(0) # to properly show intersections
+        
+        # ensure text displays properly
+        phong.set_color_by_tex("\\boldsymbol{\hat{n}}", BLACK)
+        phong.set_color_by_tex("\\boldsymbol{\hat{l}}", BLACK)
+        phong.set_color_by_tex("\\boldsymbol{\hat{r}}", BLACK)
+        phong.set_color_by_tex("\\boldsymbol{\hat{v}}", BLACK)
+        
+        self.remove(phong)
+        self.remove(unit_normal_text)
+        self.remove(light_vector_text)
+        self.remove(reflected_light_vector_text)
+        self.remove(viewer_vector_text)
+        
+        self.play(GrowFromCenter(sphere))
+        self.play(GrowFromCenter(light))
+        self.play(Create(ray, run_time=1.5))
+        self.play(GrowFromCenter(first_hit_point_dot))
+        self.play(Write(phong))
+        self.play(Create(unit_normal, run_time=1.5))
+        phong.set_color_by_tex("\\boldsymbol{\hat{n}}", BLUE)
+        self.play(FadeIn(unit_normal_text))
+        self.play(Create(light_vector, run_time=1.5))
+        phong.set_color_by_tex("\\boldsymbol{\hat{l}}", YELLOW)
+        self.play(FadeIn(light_vector_text))
+        self.play(Create(reflected_light_vector, run_time=1.5))
+        phong.set_color_by_tex("\\boldsymbol{\hat{r}}", ORANGE)
+        self.play(FadeIn(reflected_light_vector_text))
+        self.play(Create(viewer_vector, run_time=1.5))
+        phong.set_color_by_tex("\\boldsymbol{\hat{v}}", GREEN)
+        self.play(FadeIn(viewer_vector_text))
+        self.play(Create(angle_between_normal_and_light))
+        self.play(Create(angle_between_reflected_and_viewer))
+        self.wait(1)
