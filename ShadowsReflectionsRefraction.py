@@ -34,11 +34,11 @@ class ShadowsReflectionsRefraction(ThreeDScene):
         plane.set_color(BLUE)
         
         # Light Source 1
-        light1 = RTPointLightSource(center=[0, 0, 3], radius=0.65, color=YELLOW)
+        light1 = RTPointLightSource(center=[0, 0, 3], radius=0.65, color=ORANGE)
         light1_text = Tex("A").next_to(light1)
         
         # Light Source 2
-        light2 = RTPointLightSource(center=[3, 0, 4], radius=0.75, color=YELLOW)
+        light2 = RTPointLightSource(center=[3, 0, 4], radius=0.75, color=ORANGE)
         light2_text = Tex("B").next_to(light2)
         
         # Calculate hit points 
@@ -65,7 +65,7 @@ class ShadowsReflectionsRefraction(ThreeDScene):
         mirror_ray = ray.get_reflected_ray(0, camera, length=6, color=LIGHT_GREY)
         
         # Refracted ray
-        refracted_ray = ray.get_refracted_ray(plane, 4, 1.33, color=PURE_BLUE)
+        refracted_ray = ray.get_refracted_ray(plane, 4, 1.33, color=BLUE)
         
         # Add all relevant objects and text to the image
         # self.add(sphere, first_hit_point_dot, light1, light2, shadow_ray1, shadow_ray2, blocking_sphere)
@@ -75,11 +75,11 @@ class ShadowsReflectionsRefraction(ThreeDScene):
         # self.add(sphere)
         # self.add(plane)
         # self.add(blocking_sphere)
+        # self.add(ray)
         # self.add(light1)
         # self.add(light2)
         # self.add(shadow_ray1)
         # self.add(shadow_ray2)
-        # self.add(ray)
         # self.add(first_hit_point_dot)
         # self.add(normal)
         # self.add(mirror_ray)
