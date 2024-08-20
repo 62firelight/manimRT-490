@@ -20,10 +20,10 @@ class RTPointLightSourceTest(ThreeDScene):
                         "\\boldsymbol{\hat{v}}", 
                         ")^a")
         
-        phong.set_color_by_tex("\\boldsymbol{\hat{n}}", BLUE)
-        phong.set_color_by_tex("\\boldsymbol{\hat{l}}", YELLOW)
-        phong.set_color_by_tex("\\boldsymbol{\hat{r}}", ORANGE)
-        phong.set_color_by_tex("\\boldsymbol{\hat{v}}", GREEN)
+        # phong.set_color_by_tex("\\boldsymbol{\hat{n}}", BLUE)
+        # phong.set_color_by_tex("\\boldsymbol{\hat{l}}", YELLOW)
+        # phong.set_color_by_tex("\\boldsymbol{\hat{r}}", ORANGE)
+        # phong.set_color_by_tex("\\boldsymbol{\hat{v}}", GREEN)
         
         phong.scale(1.45)
         
@@ -47,7 +47,7 @@ class RTPointLightSourceTest(ThreeDScene):
         sphere.set_color(BLUE)
         
         # Light Source
-        light = RTPointLightSource(center=[3, 0, 4], radius=0.1, color=YELLOW)
+        light = RTPointLightSource(center=[2.35, 0, 4], radius=0.1, color=YELLOW)
         
         # Calculate hit points 
         hit_points = sphere.get_intersection(ray)
@@ -62,15 +62,15 @@ class RTPointLightSourceTest(ThreeDScene):
         
         # Unit normal
         unit_normal = Ray3D(first_hit_point, ray.get_unit_normal(0), color=BLUE)
-        unit_normal_text = MathTex("\\boldsymbol{\\hat{n}}", color=BLUE).scale(2).next_to(unit_normal.get_end(), RIGHT, buff=-0.1)
+        unit_normal_text = MathTex("\\boldsymbol{\\hat{n}}", color=BLUE).scale(2).next_to(unit_normal.get_end(), RIGHT, buff=-0.14)
         
         # Light vector
         light_vector = Ray3D(first_hit_point, ray.get_light_vector(0, light), color=YELLOW)
-        light_vector_text = MathTex("\\boldsymbol{\\hat{l}}", color=YELLOW).scale(2).next_to(light_vector.get_end(), RIGHT, buff=0.1)
+        light_vector_text = MathTex("\\boldsymbol{\\hat{l}}", color=YELLOW).scale(2).next_to(light_vector.get_end(), RIGHT, buff=-0.025)
         
         # Reflected light vector
         reflected_light_vector = Ray3D(first_hit_point, ray.get_reflected_light_vector(0, light), color=ORANGE)
-        reflected_light_vector_text = MathTex("\\boldsymbol{\\hat{r}}", color=ORANGE).scale(2).next_to(reflected_light_vector.get_end(), RIGHT + OUT, buff=0.01)
+        reflected_light_vector_text = MathTex("\\boldsymbol{\\hat{r}}", color=ORANGE).scale(2).next_to(reflected_light_vector.get_end(), RIGHT, buff=-0.075)
         
         # Viewer vector (points towards the viewer of scene)
         viewer_vector = Ray3D(first_hit_point, ray.get_viewer_vector(0, camera), color=GREEN)
@@ -132,18 +132,22 @@ class RTPointLightSourceTest(ThreeDScene):
         self.play(GrowFromCenter(light))
         self.play(Create(ray, run_time=1.5))
         self.play(GrowFromCenter(first_hit_point_dot))
-        self.play(Write(phong))
+        self.play(FadeIn(phong))
         self.play(Create(unit_normal, run_time=1.5))
         phong.set_color_by_tex("\\boldsymbol{\hat{n}}", BLUE)
+        self.wait(0.5)
         self.play(FadeIn(unit_normal_text))
         self.play(Create(light_vector, run_time=1.5))
         phong.set_color_by_tex("\\boldsymbol{\hat{l}}", YELLOW)
+        self.wait(0.5)
         self.play(FadeIn(light_vector_text))
         self.play(Create(reflected_light_vector, run_time=1.5))
         phong.set_color_by_tex("\\boldsymbol{\hat{r}}", ORANGE)
+        self.wait(0.5)
         self.play(FadeIn(reflected_light_vector_text))
         self.play(Create(viewer_vector, run_time=1.5))
         phong.set_color_by_tex("\\boldsymbol{\hat{v}}", GREEN)
+        self.wait(0.5)
         self.play(FadeIn(viewer_vector_text))
         self.play(Create(angle_between_normal_and_light))
         self.play(Create(angle_between_reflected_and_viewer))
