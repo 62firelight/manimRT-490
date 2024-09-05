@@ -10,28 +10,17 @@ from manim_rt.Utility import solve_quadratic
 class RTSphere(Sphere):
     """A sphere with transformations that are applied and tracked.
     
-    Parameters
-    ----------
-    translation
-        The translation transformation to apply to the sphere.
-    x_scale
-        The scale of the sphere along the X axis.
-    y_scale
-        The scale of the sphere along the Y axis.
-    z_Scale
-        The scale of the sphere along the Z axis.
-    x_rotation
-        The rotation of the sphere along the X axis.
-    y_rotation
-        The rotation of the sphere along the Y axis.
-    z_rotation
-        The rotation of the sphere along the Z axis.
-    refractive_index
-        The refractive index of the sphere.
-    color
-        The color of the sphere.
-    opacity
-        The opacity of the sphere.
+    Args:
+        translation: The translation transformation to apply to the sphere.
+        x_scale: The scale of the sphere along the X axis.
+        y_scale: The scale of the sphere along the Y axis.
+        z_scale: The scale of the sphere along the Z axis.
+        x_rotation: The rotation of the sphere along the X axis.
+        y_rotation: The rotation of the sphere along the Y axis.
+        z_rotation: The rotation of the sphere along the Z axis.
+        refractive_index: The refractive index of the sphere.
+        color: The color of the sphere.
+        opacity: The opacity of the sphere.
     """
     def __init__(
         self,
@@ -116,14 +105,11 @@ class RTSphere(Sphere):
     ):
         """Calculates the intersection point(s) between this sphere and a given ray.
         
-        Parameters
-        ----------
-        ray
-            A Ray3D Mobject to calculate intersection point(s) with.
+        Args:
+            ray: A Ray3D Mobject to calculate intersection point(s) with.
             
-        Returns
-        -------
-        An array containing the intersection point(s) with the given ray. 
+        Returns:
+            An array containing the intersection point(s) with the given ray. 
         The array is empty if there are no intersection points.
         """
         # apply inverse transformation to the ray
@@ -178,32 +164,19 @@ class RTSphere(Sphere):
         """Generates a sphere along a given ray. 
         Useful for guaranteeing an intersection point with a ray.
         
-        Parameters
-        ----------
-        ray
-            A Ray3D Mobject to use for generating a sphere.
-        distance_along_ray
-            The distance along the ray at which a sphere will be generated.
-        translation
-            The translation transformation to apply to the sphere.
-        x_scale
-            The scale of the sphere along the X axis.
-        y_scale
-            The scale of the sphere along the Y axis.
-        z_Scale
-            The scale of the sphere along the Z axis.
-        x_rotation
-            The rotation of the sphere along the X axis.
-        y_rotation
-            The rotation of the sphere along the Y axis.
-        z_rotation
-            The rotation of the sphere along the Z axis.
-        refractive_index
-            The refractive index of the sphere.
-        color
-            The color of the sphere.
-        opacity
-            The opacity of the sphere.
+        Args:
+            ray: A Ray3D Mobject to use for generating a sphere.
+            distance_along_ray: The distance along the ray at which a sphere will be generated.
+            translation: The translation transformation to apply to the sphere.
+            x_scale: The scale of the sphere along the X axis.
+            y_scale: The scale of the sphere along the Y axis.
+            z_scale: The scale of the sphere along the Z axis.
+            x_rotation: The rotation of the sphere along the X axis.
+            y_rotation: The rotation of the sphere along the Y axis.
+            z_rotation: The rotation of the sphere along the Z axis.
+            refractive_index: The refractive index of the sphere.
+            color: The color of the sphere.
+            opacity: The opacity of the sphere.
         """
         sphere_center = ray.start + distance_along_ray * np.array(ray.direction)
         

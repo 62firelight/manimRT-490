@@ -15,8 +15,8 @@ class TotalInternalRefractionTest(ThreeDScene):
         labels = axes.get_axis_labels()
         
         # Planes
-        bottom_air_plane = RTPlane(x_scale=8, refractive_index=1)
-        top_air_plane = RTPlane(translation=[0, 0, 0.5], x_scale=8, refractive_index=1)
+        bottom_air_plane = RTPlane(x_scale=8, refractive_index=1, color=BLUE)
+        top_air_plane = RTPlane(translation=[0, 0, 0.5], x_scale=8, refractive_index=1, color=BLUE)
         
         # Incident ray
         ray_start = [-2, 0, 0.5]

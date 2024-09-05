@@ -7,28 +7,17 @@ from manim_rt.Ray3D import Ray3D
 class RTPlane(Square):
     """A plane with transformations that are applied and tracked.
     
-    Parameters
-    ----------
-    translation
-        The translation transformation to apply to the plane.
-    x_scale
-        The scale of the plane along the X axis.
-    y_scale
-        The scale of the plane along the Y axis.
-    z_Scale
-        The scale of the plane along the Z axis.
-    x_rotation
-        The rotation of the plane along the X axis.
-    y_rotation
-        The rotation of the plane along the Y axis.
-    z_rotation
-        The rotation of the plane along the Z axis.
-    refractive_index
-        The refractive index of the plane.
-    color
-        The color of the plane.
-    opacity
-        The opacity of the plane.
+    Args:
+        translation: The translation transformation to apply to the plane.
+        x_scale: The scale of the plane along the X axis.
+        y_scale: The scale of the plane along the Y axis.
+        z_scale: The scale of the plane along the Z axis.
+        x_rotation: The rotation of the plane along the X axis.
+        y_rotation: The rotation of the plane along the Y axis.
+        z_rotation: The rotation of the plane along the Z axis.
+        refractive_index: The refractive index of the plane.
+        color: The color of the plane.
+        opacity: The opacity of the plane.
     """
     def __init__(
         self,
@@ -113,14 +102,11 @@ class RTPlane(Square):
     ):
         """Calculates the intersection point(s) between this plane and a given ray.
         
-        Parameters
-        ----------
-        ray
-            A Ray3D Mobject to calculate intersection point(s) with.
+        Args:
+            ray: A Ray3D Mobject to calculate intersection point(s) with.
             
-        Returns
-        -------
-        An array containing the intersection point(s) with the given ray. 
+        Returns:
+            An array containing the intersection point(s) with the given ray. 
         The array is empty if there are no intersection points.
         """
         # apply inverse transformation to the ray

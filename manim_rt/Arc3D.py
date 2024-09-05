@@ -8,14 +8,10 @@ class Arc3D(ArcBetweenPoints):
     Not guaranteed to display correctly. Switching the parameters around may 
     help in this regard.
     
-    Parameters
-    ----------
-    line1
-        End point of the arc.
-    line2
-        Starting point of the arc.
-    color
-        Color of the arc.
+    Args:
+        line1: End point of the arc.
+        line2: Starting point of the arc.
+        color: Color of the arc.
     """
     def __init__(
         self, 

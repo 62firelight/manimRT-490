@@ -41,10 +41,10 @@ class ReflectionRay(ThreeDScene):
         # Mirror ray
         mirror_ray = ray.get_reflected_ray(0, camera, length=6, color=LIGHT_GREY)
         
-        # This sphere will intersect with the shadow ray above
+        # This sphere will intersect with the reflection ray
         blocking_sphere = RTSphere([4, 0, 2], x_scale=0.5, y_scale=0.5, z_scale=0.5)
         blocking_sphere.set_color(GREEN)
         
-        # Add all relevants objects and text to the image
+        # Add all relevant objects and text to the image
         self.add(camera, ray, plane, first_hit_point_dot, normal, mirror_ray, blocking_sphere)
         self.add_fixed_orientation_mobjects(first_hit_point_text, normal_text)

@@ -7,15 +7,15 @@ from manim_rt.Ray3D import Ray3D
 
 class RefractedRayTest(ThreeDScene):
     def construct(self):
-        self.set_camera_orientation(phi=89 * DEGREES, theta=-180 * DEGREES, zoom=1.75)
+        self.set_camera_orientation(phi=89 * DEGREES, theta=-180 * DEGREES, zoom=2, frame_center=[1, 0, -0.5])
         
         # Axes for easier placement of objects
         axes = ThreeDAxes()
         labels = axes.get_axis_labels()
         
         # Planes (maybe the air plane should be a different colour)
-        water_plane = RTPlane(refractive_index=1.33)
-        air_plane = RTPlane([0, -1, -1], refractive_index=1)
+        water_plane = RTPlane(refractive_index=1.33, color=BLUE)
+        air_plane = RTPlane([0, -1, -1], refractive_index=1, color=BLUE)
         
         # Incident ray
         ray_start = [-1, 1, 0.5]
@@ -56,7 +56,7 @@ class RefractedRayTest(ThreeDScene):
         n3_text = MathTex("n = 1").next_to(second_refracted_ray.get_center(), IN, buff=0.5)
         
         # Objects
-        self.add(axes, labels, water_plane, air_plane, ray, first_refracted_ray, unit_normal_n1, unit_normal_n2, angle_n1, angle_n2, second_refracted_ray)
+        self.add(water_plane, air_plane, ray, first_refracted_ray, unit_normal_n1, unit_normal_n2, angle_n1, angle_n2, second_refracted_ray)
         
         # Text
         self.add_fixed_orientation_mobjects(angle_n1_text, angle_n2_text, n1_text, n2_text, n3_text)

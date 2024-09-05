@@ -14,18 +14,13 @@ def solve_quadratic(
     ) -> list:
     """Solves a quadratic equation that is set equal to 0.
     
-    Parameters
-    ----------
-    a
-        The a value to substitute into the quadratic formula.
-    b
-        The b value to substitute into the quadratic formula.
-    c
-        The c value to substitute into the quadratic formula.
+    Args:
+        a: The a value to substitute into the quadratic formula.
+        b: The b value to substitute into the quadratic formula.
+        c: The c value to substitute into the quadratic formula.
         
-    Returns
-    -------
-    An array containing the solution(s) to the given quadratic equation.
+    Returns:
+        An array containing the solution(s) to the given quadratic equation.
     This array will be empty if there are no solutions.
     """
     
@@ -48,13 +43,10 @@ def is_whole_number(
     ) -> bool:
     """Check if a given number is considered to be an integer.
     
-    Parameters
-    ----------
-    number
-        The number to check.
+    Args:
+        number: The number to check.
         
-    Returns
-    -------
+    Returns:
         A boolean determining whether the given number is an integer or not.
     """
     return number % 1 == 0
@@ -69,18 +61,13 @@ def clamp(
         
         source: https://www.geeksforgeeks.org/how-to-clamp-floating-numbers-in-python/ 
         
-        Parameters
-        ----------
-        n
-            The number to limit.
-        min
-            The lower bound of the number.
-        max
-            The upper bound of the number.
+        Args:
+            n: The number to limit.
+            min: The lower bound of the number.
+            max: The upper bound of the number.
             
-        Returns
-        -------
-        A number that falls in the domain [min, max].
+        Returns:
+            A number that falls in the domain [min, max].
         """
         if n < min: 
             return min

@@ -11,20 +11,13 @@ from manim_rt.Utility import clamp
 class RTCamera(Axes):
     """A virtual camera that represents the observer of a scene.
     
-    Parameters
-    ----------
-    projection_point_coords
-        The 3D coordinates of the projection point.
-    image_width
-        The grid width of the camera's 2D image plane.
-    image_height
-        The grid height of the camera's 2D image plane.
-    total_width
-        The width of the camera's 2D image plane.
-    total_height
-        The height of the camera's 2D image plane.
-    focal_length
-        The distance from the projection point to the image plane.
+    Args:
+        projection_point_coords: The 3D coordinates of the projection point.
+        image_width: The grid width of the camera's 2D image plane.
+        image_height: The grid height of the camera's 2D image plane.
+        total_width: The width of the camera's 2D image plane.
+        total_height: The height of the camera's 2D image plane.
+        focal_length: The distance from the projection point to the image plane.
     """
     def __init__(
         self,
@@ -153,9 +146,7 @@ class RTCamera(Axes):
         """A method ported over from NumberPlane. Generate all the lines, faded and not faded.
          Two sets of lines are generated: one parallel to the X-axis, and parallel to the Y-axis.
 
-        Returns
-        -------
-        Tuple[:class:`~.VGroup`, :class:`~.VGroup`]
+        Returns:
             The first (i.e the non faded lines) and second (i.e the faded lines) sets of lines, respectively.
         """
         x_axis = self.get_x_axis()
@@ -193,20 +184,13 @@ class RTCamera(Axes):
     ) -> tuple[VGroup, VGroup]:
         """A method ported over from NumberPlane. Generate a set of lines parallel to an axis.
 
-        Parameters
-        ----------
-        axis_parallel_to
-            The axis with which the lines will be parallel.
-        axis_perpendicular_to
-            The axis with which the lines will be perpendicular.
-        ratio_faded_lines
-            The ratio between the space between faded lines and the space between non-faded lines.
-        freq
-            Frequency of non-faded lines (number of non-faded lines per graph unit).
+        Args:
+            axis_parallel_to: The axis with which the lines will be parallel.
+            axis_perpendicular_to: The axis with which the lines will be perpendicular.
+            ratio_faded_lines: The ratio between the space between faded lines and the space between non-faded lines.
+            freq: Frequency of non-faded lines (number of non-faded lines per graph unit).
 
-        Returns
-        -------
-        Tuple[:class:`~.VGroup`, :class:`~.VGroup`]
+        Returns:
             The first (i.e the non-faded lines parallel to `axis_parallel_to`) and second
              (i.e the faded lines parallel to `axis_parallel_to`) sets of lines, respectively.
         """
@@ -260,22 +244,15 @@ class RTCamera(Axes):
     ):
         """Creates a ray that goes through the centre of the pixel specified by (x, y).
         
-        Parameters
-        ----------
-        x
-            The x coordinate of the pixel that the ray goes through.
-        y
-            The y coordinate of the pixel that the ray goes through.
-        length
-            The length of the ray.
-        thickness
-            The thickness of the ray.
-        color
-            The color of the ray.
+        Args:
+            x: The x coordinate of the pixel that the ray goes through.
+            y: The y coordinate of the pixel that the ray goes through.
+            length: The length of the ray.
+            thickness: The thickness of the ray.
+            color: The color of the ray.
             
-        Returns
-        -------
-        A Ray3D Mobject that goes through the centre of the pixel specified by (x, y).
+        Returns:
+            A Ray3D Mobject that goes through the centre of the pixel specified by (x, y).
         """
         if length is None:
             length = self.focal_length * 2
@@ -304,18 +281,13 @@ class RTCamera(Axes):
     ):
         """Creates a colored Square Mobject at the pixel specified by (x, y).
         
-        Parameters
-        ----------
-        x
-            The x coordinate of the pixel.
-        y 
-            The y coordinate of the pixel.
-        color
-            The color of the Square Mobject at the specified pixel.
+        Args:
+            x: The x coordinate of the pixel.
+            y: The y coordinate of the pixel.
+            color: The color of the Square Mobject at the specified pixel.
             
-        Returns
-        -------
-        A Square Mobject at the pixel specified by (x, y).
+        Returns:
+            A Square Mobject at the pixel specified by (x, y).
         """
         pixel_x_coord = round(x)
         pixel_y_coord = round(y)

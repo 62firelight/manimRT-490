@@ -1,0 +1,42 @@
+@startuml
+
+left to right direction
+
+skinparam {
+  ' use conventional UML notation
+  Style StrictUML
+
+  ' use + and - characters instead of icons for showing visibility
+  ClassAttributeIconSize 0
+
+  ' less pointer corners
+  RoundCorner 5
+}
+
+skinparam packageStyle rectangle
+
+package Manim {
+class "ArcBetweenPoints" as arcbetweenpoints
+class "Arrow3D" as arrow3d
+class "Sphere" as sphere
+class "Axes" as axes
+class "Square" as square
+}
+
+package ManimRT {
+class "Arc3D" as arc3d #lightblue
+class "Ray3D" as ray3d #lightblue
+class "RTSphere" as rtsphere #lightblue
+class "RTCamera" as rtcamera #lightblue
+class "RTPlane" as rtplane #lightblue
+class "RTPointLightSource" as rtpointlightsource #lightblue
+}
+
+arcbetweenpoints --|> arc3d
+arrow3d --|> ray3d
+axes --|> rtcamera
+square --|> rtplane
+sphere --|> rtsphere
+sphere -|> rtpointlightsource
+
+@enduml

@@ -51,6 +51,6 @@ class ShadowRays(ThreeDScene):
         blocking_sphere = RTSphere([1.5, 0, 2], x_scale=0.5, y_scale=0.5, z_scale=0.5)
         blocking_sphere.set_color(GREEN)
         
-        # Add all relevants objects and text to the image
+        # Add all relevant objects and text to the image
         self.add(sphere, first_hit_point_dot, light1, light2, shadow_ray1, shadow_ray2, blocking_sphere)
         self.add_fixed_orientation_mobjects(first_hit_point_text, light1_text, light2_text)
